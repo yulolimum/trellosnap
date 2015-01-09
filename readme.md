@@ -12,5 +12,4 @@ This extension is built using both ruby and node technologies. The following ins
 - Run `npm install -g coffee-script`
 - Run `npm install -g jade@1.8.1`
 - Run `bundle`
-- Run `rake setup`
-- Run `rake`
+- Run `foreman start`
