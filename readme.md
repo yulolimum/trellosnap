@@ -10,6 +10,7 @@ This extension is built using both ruby and node technologies. The following ins
 - Clone
 - Run `gem install bundler`
 - Run `npm install -g coffee-script`
+- Run `npm install -g jade@1.8.1`
 - Run `bundle`
 - Run `rake setup`
 - Run `rake`
