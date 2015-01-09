@@ -12,6 +12,7 @@ GEM
     neat (1.7.1)
       bourbon (>= 4.0)
       sass (>= 3.3)
+    rake (10.4.2)
     sass (3.4.9)
     thor (0.19.1)
 
@@ -23,4 +24,5 @@ DEPENDENCIES
   bourbon (~> 4.1.0)
   coffee-script-source (~> 1.8.0)
   neat (~> 1.7.1)
+  rake (~> 10.4.2)
   sass (~> 3.4.9)
