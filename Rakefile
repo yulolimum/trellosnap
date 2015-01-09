@@ -29,4 +29,15 @@ namespace :files do
   end
 end
 
+desc "Set up the project. Run updates."
+task :setup do
+  puts "UPDATE: Updating broubon"
+  system "cd ext/assets/stylesheets/; bourbon update"
+
+  puts "UPDATE: Updating neat"
+  system "cd ext/assets/stylesheets/; neat update"
+
+  puts "You are ready to start. Run 'rake' to start compiling!"
+end
+
 task default: "files:watch"
