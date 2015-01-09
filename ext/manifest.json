@@ -1,0 +1,21 @@
+{
+  "name": "Trellog",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Capture screenshots on websites and upload to Trello",
+  "homepage_url": "http://glukhenko.com",
+  "icons": {
+    "16": "assets/images/icons/icon16.png",
+    "48": "assets/images/icons/icon48.png",
+    "128": "assets/images/icons/icon128.png"
+  },
+  "background": {
+    "page": "views/background/background.html",
+    "persistent": true
+  },
+  "browser_action": {
+    "default_icon": "assets/images/icons/icon19.png",
+    "default_title": "Trellog",
+    "default_popup": "views/browser_action/browser_action.html"
+  }
+}
