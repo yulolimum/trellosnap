@@ -1,6 +1,6 @@
 # Trellosnap
 
-This is a Chrome Extension that will help with the task of bug reporting. It allows you to take screenshots of website page or copy content - all of this gets upload directly to Trello to a board of your choosing.
+This is a Chrome Extension that will help with the task of bug reporting. It allows you to take screenshots of website pages or copy website content - all of this gets uploaded directly to Trello to a board of your choosing.
 
 
 ### Setup
