@@ -25,7 +25,7 @@ This extension is built using both ruby and node technologies. The following ins
 
 Hooked up event to capture visible page and send the image to an 'edit' screen. Style the Browser Action:
 
-![http://clrsight.co/yg/011015-tfrsh.jpg?+]
+!(http://clrsight.co/yg/011015-tfrsh.jpg?+)
 
 
 ###### 01-08-15
