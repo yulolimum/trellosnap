@@ -6,9 +6,24 @@ $gutter: 30px;
 $grid-columns: 12;
 $max-width: em(1088);
 
-// Neat Breakpoints
-$medium-screen: em(640);
-$large-screen: em(860);
+// main
+$desktop: new-breakpoint(min-width 1025px);
+$tablet: new-breakpoint(min-width 768px max-width 1024px);
+$mobile: new-breakpoint(max-width 767px);
 
-$medium-screen-up: new-breakpoint(min-width $medium-screen 4);
-$large-screen-up: new-breakpoint(min-width $large-screen 8);
+
+// secondary
+$desktop-large: new-breakpoint(min-width 1441px);
+$desktop-medium: new-breakpoint(min-width 1201px max-width 1440px);
+$desktop-small: new-breakpoint(min-width 1025px max-width 1200px);
+
+$tablet-landscape: new-breakpoint(min-width 960px max-width 1024px);
+$tablet-portrait: new-breakpoint(min-width 768px max-width 959px);
+
+$mobile-landscape: new-breakpoint(min-width 480px max-width 767px);
+$mobile-portrait: new-breakpoint(max-width 479px);
+
+
+// combined
+$desktop-and-tablet: new-breakpoint(min-width 768px);
+$tablet-and-mobile: new-breakpoint(max-width 1024px);

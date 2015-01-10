@@ -11,7 +11,7 @@
   },
   "background": {
     "page": "views/background.html",
-    "persistent": true
+    "persistent": false
   },
   "browser_action": {
     "default_icon": "assets/images/icons/icon19.png",
@@ -19,6 +19,8 @@
     "default_popup": "views/browser-action.html"
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "*://*/*",
+    "<all_urls>"
   ]
 }

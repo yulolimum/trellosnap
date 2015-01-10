@@ -1,4 +1,51 @@
+@import "vendor/_normalize"
 @import "_base/base"
 
-h1
-  color : red
+#trellosnap
+
+  .action-title
+    text-align  : center
+    font-weight : 300
+    color       : $blue
+    padding     : 15px 35px
+
+  .button-container
+    @include row
+    width : 280px
+
+  .capture-button
+    @include span-columns(50000 of 100000)
+    @include omega()
+    padding     : 20px
+    line-height : 1.2
+    text-align  : center
+    cursor      : pointer
+
+    &:before
+      content             : ""
+      display             : block
+      width               : 100%
+      height              : 40px
+      background-position : center center
+      background-repeat   : no-repeat
+      background-size     : auto 100%
+      margin-bottom       : 15px
+      background-color    : transparent
+      @include transition(all .2s ease-in-out)
+
+    &#capture-visible:before
+      background-image: url(../images/ico.capture-visible.png)
+
+    &#capture-partial:before
+      background-image: url(../images/ico.capture-partial.png)
+
+    &:hover
+      @include transition(all .2s ease-in-out)
+      background-color : $blue
+      color            : white
+
+      &#capture-visible:before
+        background-image: url(../images/ico.capture-visible-white.png)
+
+      &#capture-partial:before
+        background-image: url(../images/ico.capture-partial-white.png)
