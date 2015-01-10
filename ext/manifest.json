@@ -10,13 +10,13 @@
     "128": "assets/images/icons/icon128.png"
   },
   "background": {
-    "page": "views/background/background.html",
+    "page": "views/background.html",
     "persistent": true
   },
   "browser_action": {
     "default_icon": "assets/images/icons/icon19.png",
     "default_title": "Trellosnap",
-    "default_popup": "views/browser_action/browser_action.html"
+    "default_popup": "views/browser-action.html"
   },
   "permissions": [
     "tabs"
