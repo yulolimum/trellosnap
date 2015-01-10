@@ -1,6 +1,8 @@
 # Trellosnap
 
-`This is a work in progress. The extension does not yet work.`
+```
+This is a work in progress. The extension does not yet work.
+```
 
 This is a Chrome Extension that will help with the task of bug reporting. It allows you to take screenshots of a website page or custom selection - all of this can be annotated and edited before getting uploaded to Trello to a board of your choosing.
 
