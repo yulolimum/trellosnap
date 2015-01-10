@@ -1,8 +1,8 @@
 {
-  "name": "Trellog",
+  "name": "Trellosnap",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "Capture screenshots on websites and upload to Trello",
+  "description": "Bug reporting tool that allows you to screenshot a page or snippet and post it to Trello as a card.",
   "homepage_url": "http://glukhenko.com",
   "icons": {
     "16": "assets/images/icons/icon16.png",
@@ -15,7 +15,10 @@
   },
   "browser_action": {
     "default_icon": "assets/images/icons/icon19.png",
-    "default_title": "Trellog",
+    "default_title": "Trellosnap",
     "default_popup": "views/browser_action/browser_action.html"
-  }
+  },
+  "permissions": [
+    "tabs"
+  ]
 }
