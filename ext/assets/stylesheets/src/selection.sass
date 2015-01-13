@@ -1,0 +1,50 @@
+@import "_base/bourbon/bourbon"
+
+html, body
+  .trellosnap-no-scroll
+    height   : 100% !important
+    overflow : hidden !important
+
+#trellosnap
+  @include box-sizing(border-box)
+  position : fixed
+  top      : 0
+  left     : 0
+  width    : 100%
+  height   : 100%
+  z-index  : 999999
+
+  *
+    @include box-sizing(border-box)
+
+  #trellosnap-selection-box
+    position   : absolute
+    background : red
+    z-index    : 9999999
+
+  .trellosnap-overlay
+    background : rgba(black, .4)
+    position   : absolute
+    width      : 50px
+    height     : 50px
+    z-index    : 99999
+    width      : 50%
+    height     : 50%
+    cursor     : crosshair
+
+    &#trellosnap-overlay-top
+      top    : 0px
+      left   : 0px
+
+    &#trellosnap-overlay-right
+      top   : 0px
+      right : 0px
+
+    &#trellosnap-overlay-bottom
+      right  : 0px
+      bottom : 0px
+
+    &#trellosnap-overlay-left
+      bottom : 0px
+      left   : 0px
+

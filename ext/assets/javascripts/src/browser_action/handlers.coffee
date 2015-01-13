@@ -16,3 +16,9 @@ class Handlers
       url: this.edit_page_path
       (tab)=>
         chrome.tabs.sendMessage tab.id, {image: image, page: this.page_info()}
+
+  @capture_partial_screenshot = ->
+    chrome.tabs.insertCSS null, {file: "/assets/stylesheets/selection.css"}, () =>
+      chrome.tabs.executeScript null, {file: "/assets/javascripts/vendor/jquery.min.js"}, () =>
+        chrome.tabs.executeScript null, {file: "/assets/javascripts/selection.js"}, () =>
+          window.close()

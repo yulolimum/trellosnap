@@ -13,7 +13,7 @@
 
     Events.bind_capture_partial = function(button) {
       return button.on("click", function() {
-        return alert("capture partial");
+        return Handlers.capture_partial_screenshot();
       });
     };
 
@@ -60,6 +60,24 @@
           return chrome.tabs.sendMessage(tab.id, {
             image: image,
             page: _this.page_info()
+          });
+        };
+      })(this));
+    };
+
+    Handlers.capture_partial_screenshot = function() {
+      return chrome.tabs.insertCSS(null, {
+        file: "/assets/stylesheets/selection.css"
+      }, (function(_this) {
+        return function() {
+          return chrome.tabs.executeScript(null, {
+            file: "/assets/javascripts/vendor/jquery.min.js"
+          }, function() {
+            return chrome.tabs.executeScript(null, {
+              file: "/assets/javascripts/selection.js"
+            }, function() {
+              return window.close();
+            });
           });
         };
       })(this));

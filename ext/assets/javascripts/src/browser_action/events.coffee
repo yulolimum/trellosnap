@@ -6,7 +6,7 @@ class Events
 
   @bind_capture_partial = (button) ->
     button.on "click", ->
-      alert "capture partial"
+      Handlers.capture_partial_screenshot()
 
 jQuery ->
 
