@@ -21,6 +21,12 @@ This extension is built using both ruby and node technologies. The following ins
 
 ### Timeline
 
+###### 01-14-15
+
+Finished the partial screenshot selection tool.
+
+![http://clrsight.co/yg/011415-04huv.gif?+](http://clrsight.co/yg/011415-04huv.gif?+)
+
 ###### 01-13-15
 
 Currently working on the partial page screenshot selection. There are no lightweight libraries out there that will do that; therefore, writing a custom solution.

@@ -8,6 +8,9 @@ class @Selection
   $left_overlay   = undefined
   win_w           = undefined
   win_y           = undefined
+  $cancel         = undefined
+  $retake         = undefined
+  $capture        = undefined
 
   @mouse_x = (e) ->
     e.pageX - $trellosnap.offset().left
@@ -35,6 +38,7 @@ class @Selection
     $(document).unbind "mousedown"
     $(document).unbind "mouseup"
     $(document).unbind "mousemove"
+    append_confirmation_buttons()
 
   @append_selection_box = ->
     $("body").append selection_box_html()
@@ -74,6 +78,37 @@ class @Selection
 
   disable_scroll = ->
     $("html, body").addClass "trellosnap-no-scroll"
+
+  append_confirmation_buttons = ->
+    $box.append confirmation_buttons_html()
+    $cancel  = $("#trellosnap-button-cancel")
+    $retake  = $("#trellosnap-button-retake")
+    $capture = $("#trellosnap-button-capture")
+    position_confirmation_buttons()
+    bind_confirmation_buttons()
+
+  confirmation_buttons_html = ->
+    """
+      <div class="trellosnap-button" id="trellosnap-button-cancel"></div>
+      <div class="trellosnap-button" id="trellosnap-button-retake"></div>
+      <div class="trellosnap-button" id="trellosnap-button-capture"></div>
+    """
+
+  position_confirmation_buttons = ->
+    if $box.outerHeight() < 65 && $box.outerWidth() < 99
+      $box.addClass "small"
+    else if $box.outerHeight() < 65
+      $box.addClass "short"
+    else if $box.outerWidth() < 99
+      $box.addClass "narrow"
+
+  bind_confirmation_buttons = ->
+    $cancel.on "click", ->
+      alert "canceled"
+    $retake.on "click", ->
+      alert "retake"
+    $capture.on "click", ->
+      alert "capture!"
 
 jQuery ->
 

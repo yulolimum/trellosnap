@@ -48,3 +48,56 @@ html, body
       bottom : 0px
       left   : 0px
 
+  .trellosnap-button
+    position : absolute
+    width    : 30px
+    height   : 30px
+    bottom   : 2px
+    cursor   : pointer
+
+    &:hover
+      @include transition(background-color .2s ease-in-out)
+
+    &#trellosnap-button-cancel
+      left            : 2px
+      background      : url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAbFBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8+T+BWAAAAI3RSTlMA9wPv7Dw3pH1M/eB2qR0Y0l1QzCdiSSsV5Nf5yWhBtoeXlEwf47wAAAEbSURBVEjHldLRboJQEEXREQVEBQpYLFXQlv//x/JAetrM7Bj30809WW9j6tEbdv5KzHeadxmJuptzb/bzjKZ+W0YZCZlIyEjIREJGAk21iLUycULGCRkJmTQSMhJqm8ZCRkImEjLf7lOm+gzGu41bMCDmh1lxDQ2JvS21m8hkNQk0A4i1whnoZEaGBRsWbFiwYaF6GRBkWJBhQQYFNm1DMRpXDZE4TCzOxzls0z8V3hQs2LBgw4INiBfMRYJNy4INi+fmMkRzdDvXVsLXZGBQvJulZNIjCDCbxkoQaG6W5P7YF4Gmq82SMhIyXsj8FTI7J5w5NGZoug9bS3InVCYjISPhjISMBJibhIxEYCRkJAIj8c+Mhk33+vf9A/w8vxiNIuCOAAAAAElFTkSuQmCC) no-repeat center center rgba(#ff2157, .95)
+      background-size : auto 15px
+
+      &:hover
+        background-color: rgba(darken(#ff2157, 12%), .95)
+
+    &#trellosnap-button-retake
+      left            : 34px
+      background      : url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAzCAMAAADivasmAAAAeFBMVEUAAAD////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////GqOSsAAAAJ3RSTlMA5Oh+E/vUzG9O9O3aqFcY37SfDY4HrZheQMRkNwP2akcfdTG9JgGiWHxcAAABy0lEQVRIx42WWbajIBBAC8EBjXPiEE3M9Lr2v8PufidKCajcX8/VmigEk7p/pWER+3cWNPwh4IiLrE4+Elia1XtCHQVoUvB808ioQGHTDb7cqJCnuM3nZ35rq4zxhHskEgBEi8gWQ8Z4QAR98D+z2eh8PKS8I1Gkjy4QZYxdhTkXUeCaOEzPnFcfb1PRqnsdnt94hWx8qyKRcsqA8i4tymXVkMqYQ24qAxI46EhtijyAW7Bn1GdEQ+lpVLoxhmhRWpJ5rRn9HU1llbwEjQhtyqgKH/4xz2jqGQp90QAWRJYmKyWBCmfuT7CTZ01Clasel93qFisBlX0KCqtVxr8jC2xRWjjiOfyzElAVOYMDz240v3IMzcUNWjFHg/Qlzt0M2v3OzaAzdnVUajLJD0enVUpwgQ2y6g2KB+JhN98+xhPMrBdMZDVE8Nu3nNTswBHf3hVyKUBBnbORz0+oHtZzbkgJ+/VZnuihLOd7T9uhZSaWL2j3bTArOdNXwuf8il68CrWl5KsIeh+deIGiczJaoEwORqXtk+EwNnM0Ht6uEA+2TVDuGNc3WJnYhsCi2+Z64zap4AJ2EF2ZrLvaZDUckUvehMzzPBZa//r+AlHivD0/w909AAAAAElFTkSuQmCC) no-repeat center center rgba(#0097ff, .95)
+      background-size : auto 15px
+
+      &:hover
+        background-color: rgba(darken(#0097ff, 9%), .95)
+
+    &#trellosnap-button-capture
+      left            : 66px
+      background      : url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAyCAMAAADbXS0mAAAAOVBMVEUAAAD///////////////////////////////////////////////////////////////////////8KOjVvAAAAEnRSTlMAfPhRS3ek+p0CBKptmFj18gYg3goGAAAAwklEQVRIx9XTMRaCMBRE0cQQQQ1Rs//FWr4mnMmZXzk19/0CSNZ6TqFt79GCflDwPAXPU3C9X9hugzXXU3A9BdOz7Hn2ivpv0D/XffkD32vMl31U0/NMjXm+K+3vUz8vlF37jRvZuI+nYNynIP3j2lNY9+1z/Y/3BZ/OwShoz/KsoLwuCK8LtQivCrvwuiC8UTjwRgHvFo4kl937FNz7FFxPwfSsup6C6ykEPQV8qHAmY9X2FPBmAe8W8G4Bby6vvr8fKYFJZUDLYdwAAAAASUVORK5CYII=) no-repeat center center rgba(#81d600, .95)
+      background-size : auto 15px
+
+      &:hover
+        background-color: rgba(darken(#81d600, 8%), .95)
+
+  #trellosnap-selection-box.small, #trellosnap-selection-box.short
+    .trellosnap-button
+      bottom: -32px
+      &#trellosnap-button-cancel
+        left: -1px
+      &#trellosnap-button-retake
+        left: 31px
+      &#trellosnap-button-capture
+        left: 63px
+
+  #trellosnap-selection-box.narrow
+    .trellosnap-button
+      left: 2px
+      &#trellosnap-button-cancel
+        bottom: 2px
+      &#trellosnap-button-retake
+        bottom: 34px
+      &#trellosnap-button-capture
+        bottom: 66px
