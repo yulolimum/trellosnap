@@ -1,9 +1,12 @@
-class @Handlers
+class Edit
 
 
 
 chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
-  console.log message.image
+  console.log message
+
+  jQuery ->
+    $("#screenshot").attr "src", message.image
 
   # CODE FOR PARIAL IMAGE
   # jQuery ->

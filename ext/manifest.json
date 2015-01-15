@@ -10,7 +10,7 @@
     "128": "assets/images/icons/icon128.png"
   },
   "background": {
-    "page": "views/background.html",
+    "scripts": ["assets/javascripts/background.js"],
     "persistent": false
   },
   "browser_action": {

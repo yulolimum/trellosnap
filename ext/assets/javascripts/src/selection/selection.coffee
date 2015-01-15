@@ -1,4 +1,4 @@
-class @Selection
+class Selection
 
   $trellosnap     = undefined
   $box            = undefined
@@ -12,13 +12,26 @@ class @Selection
   $retake         = undefined
   $capture        = undefined
 
-  @mouse_x = (e) ->
+  @init_selection = ->
+    append_selection_box() unless $("#trellosnap").length
+    $(document).on "mousedown", (e) ->
+      e.preventDefault()
+      start_drawing_box mouse_x(e), mouse_y(e)
+    .on "mouseup", (e) ->
+      e.preventDefault()
+      stop_drawing_box()
+
+  reinit_selection = ->
+    $trellosnap.remove()
+    Selection.init_selection()
+
+  mouse_x = (e) ->
     e.pageX - $trellosnap.offset().left
 
-  @mouse_y = (e) ->
+  mouse_y = (e) ->
     e.pageY - $trellosnap.offset().top
 
-  @start_drawing_box = (x, y) ->
+  start_drawing_box = (x, y) ->
     disable_scroll()
     win_w = $(window).outerWidth()
     win_y = $(window).outerHeight()
@@ -29,18 +42,18 @@ class @Selection
     $left_overlay.css {width: "#{x}px", height: "#{win_y - y}px"}
 
     $(document).on "mousemove", (e)  =>
-      resize_selection_box x, y, this.mouse_x(e), this.mouse_y(e)
-      resize_top_overlay x, this.mouse_x(e)
-      resize_right_overlay x, y, this.mouse_x(e), this.mouse_y(e)
-      resize_bottom_overlay y, this.mouse_y(e)
+      resize_selection_box x, y, mouse_x(e), mouse_y(e)
+      resize_top_overlay x, mouse_x(e)
+      resize_right_overlay x, y, mouse_x(e), mouse_y(e)
+      resize_bottom_overlay y, mouse_y(e)
 
-  @stop_drawing_box = ->
+  stop_drawing_box = ->
     $(document).unbind "mousedown"
     $(document).unbind "mouseup"
     $(document).unbind "mousemove"
     append_confirmation_buttons()
 
-  @append_selection_box = ->
+  append_selection_box = ->
     $("body").append selection_box_html()
     $trellosnap     = $("#trellosnap")
     $box            = $("#trellosnap-selection-box")
@@ -79,6 +92,9 @@ class @Selection
   disable_scroll = ->
     $("html, body").addClass "trellosnap-no-scroll"
 
+  reenable_scroll = ->
+    $("html, body").removeClass "trellosnap-no-scroll"
+
   append_confirmation_buttons = ->
     $box.append confirmation_buttons_html()
     $cancel  = $("#trellosnap-button-cancel")
@@ -104,19 +120,15 @@ class @Selection
 
   bind_confirmation_buttons = ->
     $cancel.on "click", ->
-      alert "canceled"
+      reenable_scroll()
+      $trellosnap.remove()
     $retake.on "click", ->
-      alert "retake"
+      reinit_selection()
     $capture.on "click", ->
-      alert "capture!"
+      image_info = {w: $box.outerWidth(), h: $box.outerHeight(), x: $box.position().left, y: $box.position().top}
+      $trellosnap.remove()
+      reenable_scroll()
+      chrome.runtime.sendMessage {capture: true, image_info: image_info}
 
 jQuery ->
-
-  Selection.append_selection_box() unless $("#trellosnap").length
-
-  $(document).on "mousedown", (e) ->
-    e.preventDefault()
-    Selection.start_drawing_box Selection.mouse_x(e), Selection.mouse_y(e)
-  .on "mouseup", (e) ->
-    e.preventDefault()
-    Selection.stop_drawing_box()
+  Selection.init_selection()
