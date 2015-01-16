@@ -7,34 +7,29 @@
 
     function Edit() {}
 
-    Edit.visible_screenshot = function(image_url) {
+    Edit.screenshot = function(type, image_url, image_info) {
       var $image;
+      if (image_info == null) {
+        image_info = {};
+      }
       $image = new Image;
       $image.src = image_url;
       return $image.onload = function() {
         return jQuery(function() {
           var $image_canvas, context;
-          $("main").append(canvas_html(image_url, $image.naturalWidth, $image.naturalHeight, 0, 0));
+          if (type === "visible") {
+            $("main").append(canvas_html(image_url, $image.naturalWidth, $image.naturalHeight, 0, 0));
+          } else if (type === "partial") {
+            $("main").append(canvas_html(image_url, image_info.w, image_info.h, image_info.x, image_info.y));
+          }
           $image_canvas = $("#canvas-image");
           context = $image_canvas[0].getContext('2d');
           context.scale(2, 2);
-          return context.drawImage($image, 0, 0);
-        });
-      };
-    };
-
-    Edit.partial_screenshot = function(image_url, image_info) {
-      var $image;
-      $image = new Image;
-      $image.src = image_url;
-      return $image.onload = function() {
-        return jQuery(function() {
-          var $image_canvas, context;
-          $("main").append(canvas_html(image_url, image_info.w, image_info.h, image_info.x, image_info.y));
-          $image_canvas = $("#canvas-image");
-          context = $image_canvas[0].getContext('2d');
-          context.scale(2, 2);
-          return context.drawImage($image, image_info.x, image_info.y, image_info.w, image_info.h, 0, 0, image_info.w, image_info.h);
+          if (type === "visible") {
+            return context.drawImage($image, 0, 0);
+          } else if (type === "partial") {
+            return context.drawImage($image, image_info.x, image_info.y, image_info.w, image_info.h, 0, 0, image_info.w, image_info.h);
+          }
         });
       };
     };
@@ -48,11 +43,7 @@
   })();
 
   chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    if (message.screenshot === "visible") {
-      return Edit.visible_screenshot(message.image);
-    } else if (message.screenshot === "partial") {
-      return Edit.partial_screenshot(message.image, message.image_info);
-    }
+    return Edit.screenshot(message.screenshot, message.image, message.image_info);
   });
 
   jQuery(function() {
