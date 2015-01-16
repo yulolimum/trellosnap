@@ -3,7 +3,7 @@
   var Edit;
 
   Edit = (function() {
-    var canvas_html;
+    var annotate_canvas, append_canvas_html, canvas_html, draw_image_to_canvas;
 
     function Edit() {}
 
@@ -17,26 +17,42 @@
       return $image.onload = function() {
         return jQuery(function() {
           var $image_canvas, context;
-          if (type === "visible") {
-            $("main").append(canvas_html(image_url, $image.naturalWidth, $image.naturalHeight, 0, 0));
-          } else if (type === "partial") {
-            $("main").append(canvas_html(image_url, image_info.w, image_info.h, image_info.x, image_info.y));
-          }
+          append_canvas_html(type, image_url, image_info, $image);
           $image_canvas = $("#canvas-image");
           context = $image_canvas[0].getContext('2d');
-          context.scale(2, 2);
-          if (type === "visible") {
-            return context.drawImage($image, 0, 0);
-          } else if (type === "partial") {
-            return context.drawImage($image, image_info.x, image_info.y, image_info.w, image_info.h, 0, 0, image_info.w, image_info.h);
-          }
+          draw_image_to_canvas(type, $image, image_info, context);
+          return annotate_canvas($("#canvas-annotations"));
         });
       };
+    };
+
+    draw_image_to_canvas = function(type, $image, image_info, context) {
+      if (image_info == null) {
+        image_info = {};
+      }
+      if (type === "visible") {
+        return context.drawImage($image, 0, 0);
+      } else if (type === "partial") {
+        return context.drawImage($image, image_info.x, image_info.y, image_info.w, image_info.h, 0, 0, image_info.w, image_info.h);
+      }
+    };
+
+    append_canvas_html = function(type, image_url, image_info, $image) {
+      if (image_info == null) {
+        image_info = {};
+      }
+      if (type === "visible") {
+        return $("main").append(canvas_html(image_url, $image.naturalWidth, $image.naturalHeight, 0, 0));
+      } else if (type === "partial") {
+        return $("main").append(canvas_html(image_url, image_info.w, image_info.h, image_info.x, image_info.y));
+      }
     };
 
     canvas_html = function(image_url, w, h, x, y) {
       return "<section id=\"editor\">\n  <canvas id=\"canvas-image\" width=\"" + w + "\" height=\"" + h + "\"></canvas>\n  <canvas id=\"canvas-annotations\" width=\"" + w + "\" height=\"" + h + "\"></canvas>\n</section>\n\n<style>\n  #editor {\n    width      : " + w + "px;\n    height     : " + h + "px;\n    background : url(" + image_url + ") no-repeat -" + x + "px -" + y + "px;\n  }\n\n  main {\n    min-width: " + (w + 100) + "px;\n  }\n</style>";
     };
+
+    annotate_canvas = function($canvas) {};
 
     return Edit;
 

@@ -5,17 +5,24 @@ class Edit
     $image.src = image_url
     $image.onload = ()->
       jQuery ->
-        if type == "visible"
-          $("main").append canvas_html image_url, $image.naturalWidth, $image.naturalHeight, 0, 0
-        else if type == "partial"
-          $("main").append canvas_html image_url, image_info.w, image_info.h, image_info.x, image_info.y
+        append_canvas_html type, image_url, image_info, $image
         $image_canvas = $("#canvas-image")
         context = $image_canvas[0].getContext('2d')
-        context.scale(2,2)
-        if type == "visible"
-          context.drawImage $image, 0, 0
-        else if type == "partial"
-          context.drawImage $image, image_info.x, image_info.y, image_info.w, image_info.h, 0, 0, image_info.w, image_info.h
+        # context.scale(2,2)
+        draw_image_to_canvas type, $image, image_info, context
+        annotate_canvas $("#canvas-annotations")
+
+  draw_image_to_canvas = (type, $image, image_info={}, context) ->
+    if type == "visible"
+      context.drawImage $image, 0, 0
+    else if type == "partial"
+      context.drawImage $image, image_info.x, image_info.y, image_info.w, image_info.h, 0, 0, image_info.w, image_info.h
+
+  append_canvas_html = (type, image_url, image_info={}, $image) ->
+    if type == "visible"
+      $("main").append canvas_html image_url, $image.naturalWidth, $image.naturalHeight, 0, 0
+    else if type == "partial"
+      $("main").append canvas_html image_url, image_info.w, image_info.h, image_info.x, image_info.y
 
   canvas_html = (image_url, w, h, x, y) ->
     """
@@ -36,6 +43,19 @@ class Edit
         }
       </style>
     """
+
+  annotate_canvas = ($canvas)->
+    # $canvas.annotate
+    #   width     : "640"
+    #   height    : "400"
+    #   color     : 'red'
+    #   type      : 'rectangle'
+    #   img       : null
+    #   linewidth : 2
+    #   fontsize  : '20px'
+    #   bootstrap : false
+    #   position  : "top"
+
 
 chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
   Edit.screenshot message.screenshot, message.image, message.image_info
