@@ -8,7 +8,7 @@ This is a Chrome Extension that will help with the task of bug reporting. It all
 
 ### Development Setup
 
-This extension is built using both ruby and node technologies. The following instructions assume that you have both Rails and Node (with NPM) installed.
+This extension uses Ruby and Node build tools. The following instructions assume that you have both Ruby 2.0+ and Node (with NPM) installed.
 
 - Clone
 - Run `gem install bundler`
