@@ -4,7 +4,7 @@
 $column: 90px;
 $gutter: 30px;
 $grid-columns: 12;
-$max-width: em(1088);
+$max-width: em(1200);
 
 // main
 $desktop: new-breakpoint(min-width 1025px);
@@ -27,3 +27,9 @@ $mobile-portrait: new-breakpoint(max-width 479px);
 // combined
 $desktop-and-tablet: new-breakpoint(min-width 768px);
 $tablet-and-mobile: new-breakpoint(max-width 1024px);
+
+.container {
+  @include outer-container;
+  border-right: 15px solid transparent !important;
+  border-left: 15px solid transparent !important;
+}

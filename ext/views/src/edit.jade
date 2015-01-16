@@ -2,15 +2,20 @@ doctype html
 html(lang="en")
   head
     title Trellosnap
-    //- link(rel="stylesheet", href="/assets/stylesheets/browser-action.css")
+    link(rel="stylesheet", href="/assets/stylesheets/edit.css")
     script(src="/assets/javascripts/vendor/jquery.min.js")
+    script(src="/assets/javascripts/vendor/hidpi-canvas.min.js")
     script(src="/assets/javascripts/edit.js")
   body
     #trellosnap
-      h1 Trellosnap Edit Page
-      h4 To-do
-      p - annotations
-      p - arrows
-      p - outlines
-      p - trello upload functionality
-      img#screenshot
+      header
+        section#header-main
+          .container
+            .logo
+              h1 Trellosnap
+            #annotate
+            #upload
+      main
+      //- footer
+      //-   section#footer-main
+      //-     .container

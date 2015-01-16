@@ -3,16 +3,61 @@
   var Edit;
 
   Edit = (function() {
+    var canvas_html;
+
     function Edit() {}
+
+    Edit.visible_screenshot = function(image_url) {
+      var $image;
+      $image = new Image;
+      $image.src = image_url;
+      return $image.onload = function() {
+        return jQuery(function() {
+          var $image_canvas, context;
+          $("main").append(canvas_html(image_url, $image.naturalWidth, $image.naturalHeight, 0, 0));
+          $image_canvas = $("#canvas-image");
+          context = $image_canvas[0].getContext('2d');
+          context.scale(2, 2);
+          return context.drawImage($image, 0, 0);
+        });
+      };
+    };
+
+    Edit.partial_screenshot = function(image_url, image_info) {
+      var $image;
+      $image = new Image;
+      $image.src = image_url;
+      return $image.onload = function() {
+        return jQuery(function() {
+          var $image_canvas, context;
+          $("main").append(canvas_html(image_url, image_info.w, image_info.h, image_info.x, image_info.y));
+          $image_canvas = $("#canvas-image");
+          context = $image_canvas[0].getContext('2d');
+          context.scale(2, 2);
+          return context.drawImage($image, image_info.x, image_info.y, image_info.w, image_info.h, 0, 0, image_info.w, image_info.h);
+        });
+      };
+    };
+
+    canvas_html = function(image_url, w, h, x, y) {
+      return "<section id=\"editor\">\n  <canvas id=\"canvas-image\" width=\"" + w + "\" height=\"" + h + "\"></canvas>\n  <canvas id=\"canvas-annotations\" width=\"" + w + "\" height=\"" + h + "\"></canvas>\n</section>\n\n<style>\n  #editor {\n    width      : " + w + "px;\n    height     : " + h + "px;\n    background : url(" + image_url + ") no-repeat -" + x + "px -" + y + "px;\n  }\n\n  main {\n    min-width: " + (w + 100) + "px;\n  }\n</style>";
+    };
 
     return Edit;
 
   })();
 
   chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    console.log(message);
-    return jQuery(function() {
-      return $("#screenshot").attr("src", message.image);
+    if (message.screenshot === "visible") {
+      return Edit.visible_screenshot(message.image);
+    } else if (message.screenshot === "partial") {
+      return Edit.partial_screenshot(message.image, message.image_info);
+    }
+  });
+
+  jQuery(function() {
+    return $("main").css({
+      "min-height": $(window).innerHeight() - 70
     });
   });
 
