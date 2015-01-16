@@ -23,7 +23,7 @@ This extension uses Ruby and Node build tools. The following instructions assume
 
 ###### 01-15-15
 
-Added functionality to the edit view. It now get's populated with the image. Started work on adding the annotations functionality.
+Added functionality to the edit view. It now gets populated with the captured image. Started work on adding the annotations functionality.
 
 ![http://clrsight.co/yg/011615-p2xgu.jpg?+](http://clrsight.co/yg/011615-p2xgu.jpg?+)
 
