@@ -128,7 +128,6 @@ class Selection
       image_info = {w: $box.outerWidth(), h: $box.outerHeight(), x: $box.position().left, y: $box.position().top}
       $trellosnap.remove()
       reenable_scroll()
-      $(window).trigger('resize')
       chrome.runtime.sendMessage {capture: true, image_info: image_info}
 
 jQuery ->
