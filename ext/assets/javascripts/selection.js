@@ -181,6 +181,7 @@
         };
         $trellosnap.remove();
         reenable_scroll();
+        $(window).trigger('resize');
         return chrome.runtime.sendMessage({
           capture: true,
           image_info: image_info

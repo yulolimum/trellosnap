@@ -31,12 +31,13 @@
         url: edit_page_path
       }, (function(_this) {
         return function(tab) {
-          return chrome.tabs.sendMessage(tab.id, {
+          chrome.tabs.sendMessage(tab.id, {
             image: image,
             image_info: image_info,
             page: page_info(),
             screenshot: "partial"
           });
+          return window.close();
         };
       })(this));
     };
