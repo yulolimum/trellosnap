@@ -104,26 +104,27 @@ MIT License
       for (var i = 0; i < stored_element.length; i++) {
         var element = stored_element[i];
         if (element.type == 'rectangle') {
-          _this.drawRectangle(element.fromx, element.fromy, element.tox, element.toy);
+          _this.drawRectangle(element.fromx, element.fromy, element.tox, element.toy, element.tint);
         } else if (element.type == 'arrow') {
-          _this.drawArrow(element.fromx, element.fromy, element.tox, element.toy);
+          _this.drawArrow(element.fromx, element.fromy, element.tox, element.toy, element.tint);
         } else if (element.type == 'text') {
           _this.drawText(element.text, element.fromx, element.fromy, element.maxwidth);
         }
       }
     },
 
-    drawRectangle: function(x, y, w, h) {
+    drawRectangle: function(x, y, w, h, tint) {
+      context.lineWidth = _this.options.linewidth;
+      context.strokeStyle = tint;
       context.beginPath();
       context.rect(x, y, w, h);
+      context.closePath();
       context.fillStyle = 'transparent';
       context.fill();
-      context.lineWidth = _this.options.linewidth;
-      context.strokeStyle = _this.options.color;
       context.stroke();
     },
 
-    drawArrow: function(x, y, w, h) {
+    drawArrow: function(x, y, w, h, tint) {
       var angle = Math.atan2(h - y, w - x);
       context.beginPath();
       context.lineWidth = _this.options.linewidth;
@@ -132,7 +133,7 @@ MIT License
       context.lineTo(w - 10 * Math.cos(angle - Math.PI / 6), h - 10 * Math.sin(angle - Math.PI / 6));
       context.moveTo(w, h);
       context.lineTo(w - 10 * Math.cos(angle + Math.PI / 6), h - 10 * Math.sin(angle + Math.PI / 6));
-      context.strokeStyle = _this.options.color;
+      context.strokeStyle = tint;
       context.stroke();
     },
 
@@ -239,7 +240,8 @@ MIT License
             'fromx': fromx,
             'fromy': fromy,
             'tox': tox,
-            'toy': toy
+            'toy': toy,
+            'tint': _this.options.color
           });
         } else if (_this.options.type == 'arrow') {
           stored_element.push({
@@ -247,7 +249,8 @@ MIT License
             'fromx': fromx,
             'fromy': fromy,
             'tox': tox,
-            'toy': toy
+            'toy': toy,
+            'tint': _this.options.color
           });
         } else if (_this.options.type == 'text') {
           $('#input_text').css({
@@ -281,11 +284,11 @@ MIT License
       if (_this.options.type == 'rectangle') {
         tox = event.pageX - offset.left - fromx;
         toy = event.pageY - offset.top - fromy;
-        _this.drawRectangle(fromx, fromy, tox, toy);
+        _this.drawRectangle(fromx, fromy, tox, toy, _this.options.color);
       } else if (_this.options.type == 'arrow') {
         tox = event.pageX - offset.left;
         toy = event.pageY - offset.top;
-        _this.drawArrow(fromx, fromy, tox, toy);
+        _this.drawArrow(fromx, fromy, tox, toy, _this.options.color);
       } else if (_this.options.type == 'text') {
         tox = event.pageX - fromx_text;
         toy = event.pageY - fromy_text;
