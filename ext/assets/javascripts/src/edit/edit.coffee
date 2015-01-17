@@ -45,16 +45,10 @@ class Edit
     """
 
   annotate_canvas = ($canvas)->
-    # $canvas.annotate
-    #   width     : "640"
-    #   height    : "400"
-    #   color     : 'red'
-    #   type      : 'rectangle'
-    #   img       : null
-    #   linewidth : 2
-    #   fontsize  : '20px'
-    #   bootstrap : false
-    #   position  : "top"
+    $canvas.annotate
+      tools_container: "#header-main #annotate"
+      color: 'red'
+      type: 'rectangle'
 
 
 chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->

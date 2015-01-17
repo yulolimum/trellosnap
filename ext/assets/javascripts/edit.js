@@ -52,7 +52,13 @@
       return "<section id=\"editor\">\n  <canvas id=\"canvas-image\" width=\"" + w + "\" height=\"" + h + "\"></canvas>\n  <canvas id=\"canvas-annotations\" width=\"" + w + "\" height=\"" + h + "\"></canvas>\n</section>\n\n<style>\n  #editor {\n    width      : " + w + "px;\n    height     : " + h + "px;\n    background : url(" + image_url + ") no-repeat -" + x + "px -" + y + "px;\n  }\n\n  main {\n    min-width: " + (w + 100) + "px;\n  }\n</style>";
     };
 
-    annotate_canvas = function($canvas) {};
+    annotate_canvas = function($canvas) {
+      return $canvas.annotate({
+        tools_container: "#header-main #annotate",
+        color: 'red',
+        type: 'rectangle'
+      });
+    };
 
     return Edit;
 

@@ -36,20 +36,25 @@ MIT License
       color = _this.options.color;
 
 
-      $('#annotate_section').css({
-        width: "500px",
-        height: "50px"
-      });
+      $(_this.options.tools_container).append('\
+        <div id="annotate_tools" style="display:inline-block">\
+          <label class="annotate-undoaction"><button id="undoaction"></button></label>\
+          <label class="annotate-rectangle"><input type="radio" name="tool_option" id="rectangle" checked><span></span></label>\
+          <!--<label class="annotate-text"><input type="radio" name="tool_option" id="text"><span></span></label>-->\
+          <label class="annotate-arrow"><input type="radio" name="tool_option" id="arrow"><span></span></label>\
+          <div class="annotate-color-changer">\
+            <div class="annotate-color-red active" data-color="red"></div>\
+            <div class="annotate-color-blue" data-color="blue"></div>\
+            <div class="annotate-color-green" data-color="green"></div>\
+            <div class="annotate-color-purple" data-color="purple"></div>\
+            <div class="annotate-color-orange" data-color="orange"></div>\
+            <div class="annotate-color-yellow" data-color="yellow"></div>\
+          </div>\
+          <label class="annotate-redoaction"><button id="redoaction"></button></label>\
+        </div>\
+      ');
 
-      $('body').append('<div id="annotate_tools" style="display:inline-block">\
-        <button id="undoaction">UNDO</button>\
-        <input type="radio" name="tool_option" id="rectangle" checked>RECTANGLE\
-        <input type="radio" name="tool_option" id="text"> TEXT\
-        <input type="radio" name="tool_option" id="arrow">ARROW\
-        <button id="redoaction" title="Redo the last undone annotation">REDO</button>\
-        </div>');
-
-      $('body').append('<textarea id="input_text" style="position:absolute;z-index:100000;display:none;top:0;left:0;background:transparent;border:1px dotted ' + _this.options.color + ';font-size:' + _this.options.fontsize + ';font-family:sans-serif;color:' + _this.options.color + ';word-wrap: break-word;outline-width: 0;overflow: hidden;padding:0px"></textarea>');
+      $("body").append('<textarea id="input_text" style="position:absolute;z-index:100000;display:none;top:0;left:0;background:transparent;border:1px dotted ' + _this.options.color + ';font-size:' + _this.options.fontsize + ';font-family:sans-serif;color:' + _this.options.color + ';word-wrap: break-word;outline-width: 0;overflow: hidden;padding:0px;resize: both;line-height:1.3;font-weight: 600;letter-spacing:.5px;"></textarea>');
 
       $(document).on('change', 'input[name="tool_option"]', _this._selecttool);
       $(document).on('click', '#redoaction', _this.redoaction);
@@ -150,7 +155,7 @@ MIT License
     },
 
     drawText: function(text, x, y, maxWidth) {
-      context.font = _this.options.fontsize + " sans-serif";
+      context.font = "600 " + _this.options.fontsize + " sans-serif";
       context.textBaseline = 'top';
       context.fillStyle = _this.options.color;
       _this.wrapText(context, text, x + 3, y + 4, maxWidth, 25);
@@ -242,8 +247,8 @@ MIT License
             left: fromx_text + 2,
             top: fromy_text,
             width: tox - 12,
-            height: toy
-          });
+            height: toy,
+          }).focus();
         }
         if (stored_undo.length > 0) {
           stored_undo = [];
@@ -255,9 +260,9 @@ MIT License
           $('#input_text').css({
             left: fromx_text + 2,
             top: fromy_text,
-            width: 100,
-            height: 50
-          });
+            width: "120px",
+            height: "90px",
+          }).focus();
         }
       }
     },
@@ -293,11 +298,11 @@ MIT License
   };
 
   $.fn.annotate.defaults = {
-    // tools_container: $("body"),
+    tools_container: "body",
     color: 'red',
     type: 'rectangle',
-    linewidth: 2,
-    fontsize: '20px',
+    linewidth: 3,
+    fontsize: '16px',
   };
 
 })(jQuery);
