@@ -4,7 +4,7 @@
 NOTE: This is a work in progress. The extension does not yet work.
 ```
 
-This is a Chrome Extension that will help with the task of bug reporting. It allows you to take screenshots of a website page or custom selection - all of this can be annotated and edited before getting uploaded to Trello to a board of your choosing.
+This is a Chrome Extension that will help with the task of website bug reporting via Trello. It will allow you to take a screenshot of a website page (entire browser window or partial selection) and annotate the screenshot (add arrows and boxes). After adding a card title and description, the screenshot will be uploaded to Trello to a board of your choosing, under a specific list, with an optional label. You will also be able to submit your browser information to help with further debugging.
 
 ### Development Setup
 
