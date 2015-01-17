@@ -60,6 +60,16 @@
       });
     };
 
+    Edit.save_canvas = function() {
+      var annotations, image, screenshot, screenshot_ctx;
+      screenshot = $("#canvas-image");
+      screenshot_ctx = screenshot[0].getContext("2d");
+      annotations = $("#canvas-annotations");
+      screenshot_ctx.drawImage(annotations[0], 0, 0);
+      image = screenshot[0].toDataURL("image/png");
+      return console.log(image);
+    };
+
     return Edit;
 
   })();
@@ -69,8 +79,11 @@
   });
 
   jQuery(function() {
-    return $("main").css({
+    $("main").css({
       "min-height": $(window).innerHeight() - 70
+    });
+    return $("#upload").on("click", ".upload-button", function() {
+      return Edit.save_canvas();
     });
   });
 

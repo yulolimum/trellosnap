@@ -50,6 +50,14 @@ class Edit
       color           : 'red'
       type            : 'rectangle'
 
+  @save_canvas = ->
+    screenshot     = $("#canvas-image")
+    screenshot_ctx = screenshot[0].getContext("2d")
+    annotations    = $("#canvas-annotations")
+    screenshot_ctx.drawImage(annotations[0], 0, 0)
+    image          = screenshot[0].toDataURL("image/png")
+    console.log image
+
 
 chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
   Edit.screenshot message.screenshot, message.image, message.image_info
@@ -58,3 +66,5 @@ jQuery ->
   $("main").css
     "min-height": $(window).innerHeight() - 70
 
+  $("#upload").on "click", ".upload-button", ->
+    Edit.save_canvas()
