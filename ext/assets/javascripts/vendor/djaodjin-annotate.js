@@ -59,6 +59,7 @@ MIT License
       $(document).on('change', 'input[name="tool_option"]', _this._selecttool);
       $(document).on('click', '#redoaction', _this.redoaction);
       $(document).on('click', '#undoaction', _this.undoaction);
+      $(document).on('click', '.annotate-color-changer > div', _this.change_color);
       _this.$el.on('mousedown', _this._mousedown);
       _this.$el.on('mouseup', _this._mouseup);
       _this.$el.on('mousemove', _this._mousemove);
@@ -162,6 +163,12 @@ MIT License
     },
 
     // Events
+    change_color: function(){
+      $(this).siblings().removeClass("active");
+      $(this).addClass("active");
+      _this.options.color = $(this).data("color");
+    },
+
     _selecttool: function() {
       _this.options.type = $(this).attr('id');
       if ($('#input_text').is(":visible")) {
