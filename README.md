@@ -21,6 +21,13 @@ This extension uses Ruby and Node build tools. The following instructions assume
 
 ### Timeline
 
+
+###### 01-16-15
+
+Added annotations functionality. No text for now (since word wrapping is difficult with `<canvas>`) - only boxes and arrows. Started work on the Trello integration.
+
+![http://clrsight.co/yg/011715-suzfz.jpg?+](http://clrsight.co/yg/011715-suzfz.jpg?+)
+
 ###### 01-15-15
 
 Added functionality to the edit view. It now gets populated with the captured image. Started work on adding the annotations functionality.
