@@ -46,9 +46,9 @@ class Edit
 
   annotate_canvas = ($canvas)->
     $canvas.annotate
-      tools_container: "#header-main #annotate"
-      color: 'red'
-      type: 'rectangle'
+      tools_container : "#header-main #annotate"
+      color           : 'red'
+      type            : 'rectangle'
 
 
 chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
@@ -57,3 +57,4 @@ chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
 jQuery ->
   $("main").css
     "min-height": $(window).innerHeight() - 70
+
