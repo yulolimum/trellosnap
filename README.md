@@ -26,7 +26,7 @@ This extension uses Ruby and Node build tools. The following instructions assume
 
 Added annotations functionality. No text for now (since word wrapping is difficult with `<canvas>`) - only boxes and arrows. Started work on the Trello integration.
 
-![//clrsight.co/yg/011715-suzfz.jpg?+](//clrsight.co/yg/011715-suzfz.jpg?+)
+![http://clrsight.co/yg/011715-suzfz.jpg?+](http://clrsight.co/yg/011715-suzfz.jpg?+)
 
 ###### 01-15-15
 
