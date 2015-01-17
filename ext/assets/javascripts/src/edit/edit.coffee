@@ -51,12 +51,36 @@ class Edit
       type            : 'rectangle'
 
   @save_canvas = ->
-    screenshot     = $("#canvas-image")
-    screenshot_ctx = screenshot[0].getContext("2d")
-    annotations    = $("#canvas-annotations")
-    screenshot_ctx.drawImage(annotations[0], 0, 0)
-    image          = screenshot[0].toDataURL("image/png")
-    console.log image
+    # screenshot     = $("#canvas-image")
+    # screenshot_ctx = screenshot[0].getContext("2d")
+    # annotations    = $("#canvas-annotations")
+    # screenshot_ctx.drawImage(annotations[0], 0, 0)
+    # image          = screenshot[0].toDataURL("image/png")
+    init_trello (access)->
+      if access
+        build_trello access
+
+  init_trello = (callback) ->
+    Trello.is_user_logged_in (username) ->
+      if username
+        Trello.get_api_credentials (creds) ->
+          if creds
+            Trello.get_client_token creds, (token) ->
+              if token
+                callback {username: username, creds: creds, token: token}
+              else
+                callback false
+          else
+            callback false
+      else
+        # show log in form
+        callback false
+
+
+  build_trello = (access) ->
+    Trello.get_boards access, (boards) ->
+      console.log boards
+
 
 
 chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
