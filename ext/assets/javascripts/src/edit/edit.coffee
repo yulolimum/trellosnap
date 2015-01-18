@@ -50,45 +50,81 @@ class Edit
       color           : 'red'
       type            : 'rectangle'
 
-  @save_canvas = ->
-    # screenshot     = $("#canvas-image")
-    # screenshot_ctx = screenshot[0].getContext("2d")
-    # annotations    = $("#canvas-annotations")
-    # screenshot_ctx.drawImage(annotations[0], 0, 0)
-    # image          = screenshot[0].toDataURL("image/png")
-    init_trello (access)->
-      if access
-        build_trello access
+  save_canvas = ->
+    screenshot     = $("#canvas-image")
+    screenshot_ctx = screenshot[0].getContext("2d")
+    annotations    = $("#canvas-annotations")
+    screenshot_ctx.drawImage(annotations[0], 0, 0)
+    image          = screenshot[0].toDataURL("image/png")
+    return image
 
-  init_trello = (callback) ->
+  blob = (data_image) ->
+    binary = atob(data_image.split(",")[1])
+    array = []
+    i = 0
+    while i < binary.length
+      array.push binary.charCodeAt(i)
+      i++
+    new Blob([new Uint8Array(array)],
+      type: "image/png"
+    )
+
+  @init_trello = ->
     Trello.is_user_logged_in (username) ->
       if username
         Trello.get_api_credentials (creds) ->
           if creds
             Trello.get_client_token creds, (token) ->
               if token
-                callback {username: username, creds: creds, token: token}
-              else
-                callback false
-          else
-            callback false
+                access = {username: username, creds: creds, token: token}
+                build_trello_boards access
+                bind_trello access
       else
         # show log in form
         callback false
 
+  bind_trello = (access)->
+    $("#trello-boards select").on "change", ->
+      build_trello_lists  $(this).find("option:selected").val(), access
+      build_trello_labels $(this).find("option:selected").val(), access
+    $("#trello-card-submit").on "click", ->
+      submit_trello_card access, $("#trello-card-name").val(), $("#trello-card-description").val(), $("#trello-lists select option:selected").val(), ["yellow","sky"].join(","), $("#trello-card-position").prop("checked"), blob(save_canvas())
 
-  build_trello = (access) ->
+  build_trello_boards = (access) ->
     Trello.get_boards access, (boards) ->
-      console.log boards
+      if boards.length
+        for board in boards
+          $("#trello-boards select").append "<option value='#{board.id}'>#{board.name}</option>"
 
+  build_trello_lists = (board_id, access) ->
+    Trello.get_lists board_id, access, (lists) ->
+      if lists.length
+        for list in lists
+          $("#trello-lists select").empty().append "<option value='#{list.id}'>#{list.name}</option>"
 
+  build_trello_labels = (board_id, access) ->
+    label_colors = ["black","blue","green","lime","orange","pink","purple","red","sky","yellow"]
+    $("#trello-labels > div").empty()
+    Trello.get_labels board_id, access, (labels) ->
+      if labels
+        for color in label_colors
+          $("#trello-labels .trello-label-#{color}").text labels[color]
+
+  submit_trello_card = (access, name, description, list, labels, position, blob) ->
+    Trello.submit_card access, name, description, list, labels, (card) ->
+      Trello.move_card_to_top  access, card.id if card && position
+      if card && blob
+        Trello.upload_attachment access, card.id, blob, (data) ->
+          alert "successfully uploaded image" if data.isUpload
 
 chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
   Edit.screenshot message.screenshot, message.image, message.image_info
 
 jQuery ->
+  Edit.init_trello()
+
   $("main").css
     "min-height": $(window).innerHeight() - 70
 
   $("#upload").on "click", ".upload-button", ->
-    Edit.save_canvas()
+     # open trello
