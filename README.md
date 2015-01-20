@@ -21,6 +21,15 @@ This extension uses Ruby and Node build tools. The following instructions assume
 
 ### Timeline
 
+###### 01-19-15
+
+Styled the 'Add New Card' form.
+
+![http://clrsight.co/yg/012015-ht2nn.jpg?+](http://clrsight.co/yg/012015-ht2nn.jpg?+)
+
+###### 01-18-15
+
+Finished the Trello API integrations. Got uploading working. Added basic forms to do test submits to Trello.
 
 ###### 01-16-15
 

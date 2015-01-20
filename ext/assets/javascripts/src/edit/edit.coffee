@@ -85,26 +85,34 @@ class Edit
 
   bind_trello = (access)->
     $("#trello-boards select").on "change", ->
+      update_select_field  $(this)
       build_trello_lists  $(this).find("option:selected").val(), access
       build_trello_labels $(this).find("option:selected").val(), access
+    $("#trello-lists select").on "change", ->
+      update_select_field  $(this)
+    $("#trello-labels").on "click", "> div", ->
+      $(this).toggleClass "selected"
     $("#trello-card-submit").on "click", ->
-      submit_trello_card access, $("#trello-card-name").val(), $("#trello-card-description").val(), $("#trello-lists select option:selected").val(), ["yellow","sky"].join(","), $("#trello-card-position").prop("checked"), blob(save_canvas())
+      submit_trello_card access, $("#trello-card-name").val(), $("#trello-card-description").val(), $("#trello-lists select option:selected").val(), get_selected_labels(), $("#trello-card-position").prop("checked"), blob(save_canvas())
 
   build_trello_boards = (access) ->
     Trello.get_boards access, (boards) ->
       if boards.length
         for board in boards
           $("#trello-boards select").append "<option value='#{board.id}'>#{board.name}</option>"
+          $("#trello-boards select").trigger "change"
 
   build_trello_lists = (board_id, access) ->
     Trello.get_lists board_id, access, (lists) ->
       if lists.length
+        $("#trello-lists select").empty()
         for list in lists
-          $("#trello-lists select").empty().append "<option value='#{list.id}'>#{list.name}</option>"
+          $("#trello-lists select").append "<option value='#{list.id}'>#{list.name}</option>"
+          $("#trello-lists select").trigger "change"
 
   build_trello_labels = (board_id, access) ->
     label_colors = ["black","blue","green","lime","orange","pink","purple","red","sky","yellow"]
-    $("#trello-labels > div").empty()
+    $("#trello-labels > div").not(".trello-label-description").empty()
     Trello.get_labels board_id, access, (labels) ->
       if labels
         for color in label_colors
@@ -117,6 +125,16 @@ class Edit
         Trello.upload_attachment access, card.id, blob, (data) ->
           alert "successfully uploaded image" if data.isUpload
 
+  update_select_field = ($select) ->
+    $select.parent().find(".input").text $select.find("option:selected").text()
+
+  get_selected_labels = ->
+    array = []
+    $("#trello-labels").find(".selected").each ->
+      array.push $(this).data("trello-color")
+    return array.join(",")
+
+
 chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
   Edit.screenshot message.screenshot, message.image, message.image_info
 
@@ -128,3 +146,4 @@ jQuery ->
 
   $("#upload").on "click", ".upload-button", ->
      # open trello
+

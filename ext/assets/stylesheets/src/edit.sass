@@ -174,9 +174,136 @@
           @include transition(all .2s ease-in-out)
 
   #trello
+    padding    : 50px 0px
     width      : 100%
-    height     : 500px
     background : white
+
+    .section-title
+      font-size      : 18px
+      font-weight    : 400
+      color          : $blue
+      text-transform : uppercase
+      margin-bottom  : 30px
+      text-align     : center
+
+      &:after
+        content       : ""
+        width         : 25px
+        border-bottom : 2px solid $blue
+        display       : block
+        margin        : 22px auto 0px
+
+
+    #trello-board-info, #trello-card-info, #trello-upload
+      @include span-columns(2 of 6)
+
+    #trello-labels
+      @include row
+
+      > div
+        @include span-columns(4)
+        height         : 30px
+        margin-bottom  : 10px
+        padding        : 0px 2px 0px 4px
+        border-left    : 4px solid transparent
+        white-space    : nowrap
+        overflow       : hidden
+        text-overflow  : ellipsis
+        line-height    : 30px
+        font-size      : 10px
+        color          : white
+        font-weight    : 600
+        text-transform : uppercase
+        cursor         : pointer
+        @include transition(all .2s ease-in-out)
+
+        &:hover
+          @include transition(all .2s ease-in-out)
+
+        &:nth-child(3n+3)
+          margin-right: 0px
+
+      .trello-label-description
+        @include span-columns(8)
+        color          : darken($blue, 10%)
+        text-transform : none
+        font-weight    : bold
+        text-align     : center
+        padding-right  : 0px
+        font-size      : 13px
+        cursor         : default
+
+      .trello-label-black
+        background: #797979
+        &:hover
+          background: darken(#797979, 8)
+        &.selected
+          border-color: darken(#797979, 30%)
+      .trello-label-blue
+        background: #0079BF
+        &:hover
+          background: darken(#0079BF, 8)
+        &.selected
+          border-color: darken(#0079BF, 30%)
+      .trello-label-green
+        background: #3CB500
+        &:hover
+          background: darken(#3CB500, 8)
+        &.selected
+          border-color: darken(#3CB500, 30%)
+      .trello-label-lime
+        background: #51E898
+        &:hover
+          background: darken(#51E898, 8)
+        &.selected
+          border-color: darken(#51E898, 30%)
+      .trello-label-orange
+        background: #FF9F19
+        &:hover
+          background: darken(#FF9F19, 8)
+        &.selected
+          border-color: darken(#FF9F19, 30%)
+      .trello-label-pink
+        background: #FF9AD8
+        &:hover
+          background: darken(#FF9AD8, 8)
+        &.selected
+          border-color: darken(#FF9AD8, 30%)
+      .trello-label-purple
+        background: #A632DB
+        &:hover
+          background: darken(#A632DB, 8)
+        &.selected
+          border-color: darken(#A632DB, 30%)
+      .trello-label-red
+        background: #EB4646
+        &:hover
+          background: darken(#EB4646, 8)
+        &.selected
+          border-color: darken(#EB4646, 30%)
+      .trello-label-sky
+        background: #00C2E0
+        &:hover
+          background: darken(#00C2E0, 8)
+        &.selected
+          border-color: darken(#00C2E0, 30%)
+      .trello-label-yellow
+        background: #FAD900
+        &:hover
+          background: darken(#FAD900, 8)
+        &.selected
+          border-color: darken(#FAD900, 30%)
+
+    #trello-upload
+      text-align  : center
+
+      #trello-card-submit
+        width          : 100%
+        max-width      : 100%
+        height         : 60px
+        font-weight    : 300
+        text-transform : uppercase
+        letter-spacing : 1px
 
   main
     background    : $brown

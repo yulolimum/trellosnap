@@ -18,25 +18,44 @@ html(lang="en")
             #upload
               .upload-button UPLOAD
       #trello
-        #trello-boards
-          select
-        #trello-lists
-          select
-        #trello-labels
-          .trello-label-black
-          .trello-label-blue
-          .trello-label-green
-          .trello-label-lime
-          .trello-label-orange
-          .trello-label-pink
-          .trello-label-purple
-          .trello-label-red
-          .trello-label-sky
-          .trello-label-yellow
-
-        #trello-card-info
-          input#trello-card-position(type="checkbox")
-          input#trello-card-name(type="text")
-          textarea#trello-card-description
-          input#trello-card-submit(type="submit" value="Submit")
+        .container
+          #trello-board-info
+            .section-title Boards / Lists / Labels
+            #trello-boards
+              label.select-field
+                .label Board:
+                .input ---
+                select
+            #trello-lists
+              label.select-field
+                .label List:
+                .input ---
+                select
+            #trello-labels
+              .trello-label-green(data-trello-color="green")
+              .trello-label-yellow(data-trello-color="yellow")
+              .trello-label-orange(data-trello-color="orange")
+              .trello-label-red(data-trello-color="red")
+              .trello-label-purple(data-trello-color="purple")
+              .trello-label-blue(data-trello-color="blue")
+              .trello-label-black(data-trello-color="black")
+              .trello-label-lime(data-trello-color="lime")
+              .trello-label-pink(data-trello-color="pink")
+              .trello-label-sky(data-trello-color="sky")
+              .trello-label-description Click Label to Select
+          #trello-card-info
+            .section-title Card Information
+            label
+              input#trello-card-name(type="text" placeholder="Card Name")
+            label
+              textarea#trello-card-description(placeholder="Card Description")
+            label.checkbox-field
+              input#trello-card-position(type="checkbox")
+              .input
+              .label Place card on top
+          #trello-upload
+            .section-title Upload
+            label
+              input#trello-card-submit(type="submit" value="Submit")
+            #trello-validation
       main

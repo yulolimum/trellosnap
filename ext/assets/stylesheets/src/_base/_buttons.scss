@@ -3,10 +3,15 @@
   input[type="submit"] {
     @extend %button;
     @include appearance(none);
-    border: none;
-    cursor: pointer;
-    user-select: none;
-    vertical-align: middle;
-    white-space: nowrap;
+    border         : none;
+    cursor         : pointer;
+    user-select    : none;
+    vertical-align : middle;
+    white-space    : nowrap;
+    @include transition(all .2s ease-in-out);
+
+    &:hover {
+      @include transition(all .2s ease-in-out);
+    }
   }
 }

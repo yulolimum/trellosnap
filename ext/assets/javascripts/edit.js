@@ -3,7 +3,7 @@
   var Edit, Trello;
 
   Edit = (function() {
-    var annotate_canvas, append_canvas_html, bind_trello, blob, build_trello_boards, build_trello_labels, build_trello_lists, canvas_html, draw_image_to_canvas, save_canvas, submit_trello_card;
+    var annotate_canvas, append_canvas_html, bind_trello, blob, build_trello_boards, build_trello_labels, build_trello_lists, canvas_html, draw_image_to_canvas, get_selected_labels, save_canvas, submit_trello_card, update_select_field;
 
     function Edit() {}
 
@@ -111,11 +111,18 @@
 
     bind_trello = function(access) {
       $("#trello-boards select").on("change", function() {
+        update_select_field($(this));
         build_trello_lists($(this).find("option:selected").val(), access);
         return build_trello_labels($(this).find("option:selected").val(), access);
       });
+      $("#trello-lists select").on("change", function() {
+        return update_select_field($(this));
+      });
+      $("#trello-labels").on("click", "> div", function() {
+        return $(this).toggleClass("selected");
+      });
       return $("#trello-card-submit").on("click", function() {
-        return submit_trello_card(access, $("#trello-card-name").val(), $("#trello-card-description").val(), $("#trello-lists select option:selected").val(), ["yellow", "sky"].join(","), $("#trello-card-position").prop("checked"), blob(save_canvas()));
+        return submit_trello_card(access, $("#trello-card-name").val(), $("#trello-card-description").val(), $("#trello-lists select option:selected").val(), get_selected_labels(), $("#trello-card-position").prop("checked"), blob(save_canvas()));
       });
     };
 
@@ -126,7 +133,8 @@
           _results = [];
           for (_i = 0, _len = boards.length; _i < _len; _i++) {
             board = boards[_i];
-            _results.push($("#trello-boards select").append("<option value='" + board.id + "'>" + board.name + "</option>"));
+            $("#trello-boards select").append("<option value='" + board.id + "'>" + board.name + "</option>");
+            _results.push($("#trello-boards select").trigger("change"));
           }
           return _results;
         }
@@ -137,10 +145,12 @@
       return Trello.get_lists(board_id, access, function(lists) {
         var list, _i, _len, _results;
         if (lists.length) {
+          $("#trello-lists select").empty();
           _results = [];
           for (_i = 0, _len = lists.length; _i < _len; _i++) {
             list = lists[_i];
-            _results.push($("#trello-lists select").empty().append("<option value='" + list.id + "'>" + list.name + "</option>"));
+            $("#trello-lists select").append("<option value='" + list.id + "'>" + list.name + "</option>");
+            _results.push($("#trello-lists select").trigger("change"));
           }
           return _results;
         }
@@ -150,7 +160,7 @@
     build_trello_labels = function(board_id, access) {
       var label_colors;
       label_colors = ["black", "blue", "green", "lime", "orange", "pink", "purple", "red", "sky", "yellow"];
-      $("#trello-labels > div").empty();
+      $("#trello-labels > div").not(".trello-label-description").empty();
       return Trello.get_labels(board_id, access, function(labels) {
         var color, _i, _len, _results;
         if (labels) {
@@ -177,6 +187,19 @@
           });
         }
       });
+    };
+
+    update_select_field = function($select) {
+      return $select.parent().find(".input").text($select.find("option:selected").text());
+    };
+
+    get_selected_labels = function() {
+      var array;
+      array = [];
+      $("#trello-labels").find(".selected").each(function() {
+        return array.push($(this).data("trello-color"));
+      });
+      return array.join(",");
     };
 
     return Edit;
