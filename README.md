@@ -25,7 +25,7 @@ This extension uses Ruby and Node build tools. The following instructions assume
 
 Styled the 'Add New Card' form.
 
-![http://clrsight.co/yg/012015-ht2nn.jpg?+](http://clrsight.co/yg/012015-ht2nn.jpg?+)
+![http://clrsight.co/yg/012015-tb025.jpg?+](http://clrsight.co/yg/012015-tb025.jpg?+)
 
 ###### 01-18-15
 
