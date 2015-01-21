@@ -1,7 +1,7 @@
 doctype html
 html(lang="en")
   head
-    title Trellosnap
+    title Trellosnap :: Edit
     link(rel="stylesheet", href="/assets/stylesheets/edit.css")
     script(src="/assets/javascripts/vendor/jquery.min.js")
     script(src="/assets/javascripts/vendor/djaodjin-annotate.js")
@@ -17,7 +17,7 @@ html(lang="en")
             #upload
               .upload-button UPLOAD
       #trello
-        .container
+        #add-card-container.container
           #trello-board-info
             .section-title Boards / Lists / Labels
             #trello-boards
@@ -59,5 +59,10 @@ html(lang="en")
             #trello-validation
             #trello-upload-progress
             #trello-upload-success Success! Here's a link to the card:
+        #login-container.container
+          #trello-login
+            .section-title Log in to Trello
+            a.log-in-to-trello(href="https://trello.com/login" target="_blank") Click to Log In
+
       main
         section#editor-container

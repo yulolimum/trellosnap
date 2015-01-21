@@ -77,6 +77,8 @@ class Edit
   @init_trello = ->
     Trello.is_user_logged_in (username) ->
       if username
+        $("#login-container").hide()
+        $("#add-card-container").show()
         Trello.get_api_credentials (creds) ->
           if creds
             Trello.get_client_token creds, (token) ->
@@ -86,7 +88,11 @@ class Edit
                 build_trello_boards access
                 bind_trello access
       else
-        # show log in form
+        $("#login-container").show()
+        $("#add-card-container").hide()
+        window.setTimeout ->
+          Edit.init_trello()
+        , 2000
 
   bind_trello = (access)->
     $("#trello-boards select").on "change", ->
@@ -167,6 +173,10 @@ class Edit
     localStorage.board     = $("#trello-boards select option:selected").val()
     localStorage.list      = $("#trello-lists select option:selected").val()
     localStorage.position  = $("#trello-card-position").prop("checked")
+
+  log_in_to_trello = ->
+    Trello.log_in $("#trello-username").val(), $("#trello-password").val(), (logged_in)->
+      console.log logged_in
 
 chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
   Edit.screenshot message.screenshot, message.image, message.image_info
