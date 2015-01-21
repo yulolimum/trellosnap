@@ -25,12 +25,12 @@ html(lang="en")
               label.select-field
                 .label Board:
                 .input ---
-                select
+                select(value="")
             #trello-lists
               label.select-field
                 .label List:
                 .input ---
-                select
+                select(value="")
             #trello-labels
               .trello-label-green(data-trello-color="green")
               .trello-label-yellow(data-trello-color="yellow")
@@ -46,9 +46,9 @@ html(lang="en")
           #trello-card-info
             .section-title Card Information
             label
-              input#trello-card-name(type="text" placeholder="Card Name")
+              input#trello-card-name(type="text" placeholder="Card Name" value="")
             label
-              textarea#trello-card-description(placeholder="Card Description")
+              textarea#trello-card-description(placeholder="Card Description" value="")
             label.checkbox-field
               input#trello-card-position(type="checkbox")
               .input
@@ -58,4 +58,7 @@ html(lang="en")
             label
               input#trello-card-submit(type="submit" value="Submit")
             #trello-validation
+            #trello-upload-progress
+            #trello-upload-success Success! Here's a link to the card:
       main
+        section#editor-container

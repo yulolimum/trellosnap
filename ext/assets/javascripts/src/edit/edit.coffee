@@ -20,16 +20,16 @@ class Edit
 
   append_canvas_html = (type, image_url, image_info={}, $image) ->
     if type == "visible"
-      $("main").append canvas_html image_url, $image.naturalWidth, $image.naturalHeight, 0, 0
+      $("#editor-container").append canvas_html image_url, $image.naturalWidth, $image.naturalHeight, 0, 0
     else if type == "partial"
-      $("main").append canvas_html image_url, image_info.w, image_info.h, image_info.x, image_info.y
+      $("#editor-container").append canvas_html image_url, image_info.w, image_info.h, image_info.x, image_info.y
 
   canvas_html = (image_url, w, h, x, y) ->
     """
-      <section id="editor">
+      <div id="editor">
         <canvas id="canvas-image" width="#{w}" height="#{h}"></canvas>
         <canvas id="canvas-annotations" width="#{w}" height="#{h}"></canvas>
-      </section>
+      </div>
 
       <style>
         #editor {
@@ -38,7 +38,7 @@ class Edit
           background : url(#{image_url}) no-repeat -#{x}px -#{y}px;
         }
 
-        main {
+        #editor-container {
           min-width: #{w+100}px;
         }
       </style>
@@ -77,11 +77,11 @@ class Edit
             Trello.get_client_token creds, (token) ->
               if token
                 access = {username: username, creds: creds, token: token}
+                $("#trello-card-position").prop "checked", true if localStorage.position
                 build_trello_boards access
                 bind_trello access
       else
         # show log in form
-        callback false
 
   bind_trello = (access)->
     $("#trello-boards select").on "change", ->
@@ -93,21 +93,26 @@ class Edit
     $("#trello-labels").on "click", "> div", ->
       $(this).toggleClass "selected"
     $("#trello-card-submit").on "click", ->
-      submit_trello_card access, $("#trello-card-name").val(), $("#trello-card-description").val(), $("#trello-lists select option:selected").val(), get_selected_labels(), $("#trello-card-position").prop("checked"), blob(save_canvas())
+      validate_card_info (validated)->
+        if validated
+          save_preferences_to_storage()
+          $("#trello-card-submit").prop "disabled", true
+          $("#trello-upload-progress").show()
+          submit_trello_card access, $("#trello-card-name").val(), $("#trello-card-description").val(), $("#trello-lists select option:selected").val(), get_selected_labels(), $("#trello-card-position").prop("checked"), blob(save_canvas())
 
   build_trello_boards = (access) ->
     Trello.get_boards access, (boards) ->
       if boards.length
         for board in boards
-          $("#trello-boards select").append "<option value='#{board.id}'>#{board.name}</option>"
-          $("#trello-boards select").trigger "change"
+          $("#trello-boards select").append "<option value='#{board.id}' #{if board.id == localStorage.board then "selected" else ""}>#{board.name}</option>"
+        $("#trello-boards select").trigger "change"
 
   build_trello_lists = (board_id, access) ->
     Trello.get_lists board_id, access, (lists) ->
       if lists.length
         $("#trello-lists select").empty()
         for list in lists
-          $("#trello-lists select").append "<option value='#{list.id}'>#{list.name}</option>"
+          $("#trello-lists select").append "<option value='#{list.id}' #{if list.id == localStorage.list then "selected" else ""}>#{list.name}</option>"
           $("#trello-lists select").trigger "change"
 
   build_trello_labels = (board_id, access) ->
@@ -123,7 +128,11 @@ class Edit
       Trello.move_card_to_top  access, card.id if card && position
       if card && blob
         Trello.upload_attachment access, card.id, blob, (data) ->
-          alert "successfully uploaded image" if data.isUpload
+          if data.isUpload
+            $("#trello-upload-progress").hide()
+            $("#trello-upload-success").show().append("<div class='url'><a href='#{card.shortUrl}'>#{card.shortUrl}</a></div>")
+          else
+            alert "Upload failed. Please try again."
 
   update_select_field = ($select) ->
     $select.parent().find(".input").text $select.find("option:selected").text()
@@ -134,6 +143,25 @@ class Edit
       array.push $(this).data("trello-color")
     return array.join(",")
 
+  validate_card_info = (callback) ->
+    validations = []
+    validations.push if $("#trello-boards select").val() == "" then false else true
+    validations.push if $("#trello-lists select").val() == "" then false else true
+    validations.push if $("#trello-card-name").val() == "" then false else true
+    append_errors validations
+    callback if validations.indexOf(false) == -1 then true else false
+
+  append_errors = (errors=[]) ->
+    $val = $("#trello-validation")
+    $val.empty()
+    $val.append "<div class='error'>Please select a board before submitting.</div>"   if !errors[0]
+    $val.append "<div class='error'>Please select a list before submitting.</div>"    if !errors[1]
+    $val.append "<div class='error'>Please add a card name before submitting.</div>"  if !errors[2]
+
+  save_preferences_to_storage = ->
+    localStorage.board     = $("#trello-boards select option:selected").val()
+    localStorage.list      = $("#trello-lists select option:selected").val()
+    localStorage.position  = $("#trello-card-position").prop("checked")
 
 chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
   Edit.screenshot message.screenshot, message.image, message.image_info
@@ -141,9 +169,15 @@ chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
 jQuery ->
   Edit.init_trello()
 
-  $("main").css
+  $("#editor-container").css
     "min-height": $(window).innerHeight() - 70
 
   $("#upload").on "click", ".upload-button", ->
-     # open trello
-
+    $trello = $("#trello")
+    if $trello.is ":visible"
+      if $("#trello-card-name").val() != "" && $("#trello-boards select").val() != "" && $("#trello-lists select").val() != ""
+        $("#trello-card-submit").trigger "click"
+      else
+        $("#trello").slideUp 200
+    else
+     $("#trello").slideDown 200

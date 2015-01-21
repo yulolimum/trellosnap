@@ -13,5 +13,10 @@
     &:hover {
       @include transition(all .2s ease-in-out);
     }
+
+    &:focus {
+      outline: none;
+      box-shadown: none;
+    }
   }
 }

@@ -3,7 +3,7 @@
   var Edit, Trello;
 
   Edit = (function() {
-    var annotate_canvas, append_canvas_html, bind_trello, blob, build_trello_boards, build_trello_labels, build_trello_lists, canvas_html, draw_image_to_canvas, get_selected_labels, save_canvas, submit_trello_card, update_select_field;
+    var annotate_canvas, append_canvas_html, append_errors, bind_trello, blob, build_trello_boards, build_trello_labels, build_trello_lists, canvas_html, draw_image_to_canvas, get_selected_labels, save_canvas, save_preferences_to_storage, submit_trello_card, update_select_field, validate_card_info;
 
     function Edit() {}
 
@@ -42,14 +42,14 @@
         image_info = {};
       }
       if (type === "visible") {
-        return $("main").append(canvas_html(image_url, $image.naturalWidth, $image.naturalHeight, 0, 0));
+        return $("#editor-container").append(canvas_html(image_url, $image.naturalWidth, $image.naturalHeight, 0, 0));
       } else if (type === "partial") {
-        return $("main").append(canvas_html(image_url, image_info.w, image_info.h, image_info.x, image_info.y));
+        return $("#editor-container").append(canvas_html(image_url, image_info.w, image_info.h, image_info.x, image_info.y));
       }
     };
 
     canvas_html = function(image_url, w, h, x, y) {
-      return "<section id=\"editor\">\n  <canvas id=\"canvas-image\" width=\"" + w + "\" height=\"" + h + "\"></canvas>\n  <canvas id=\"canvas-annotations\" width=\"" + w + "\" height=\"" + h + "\"></canvas>\n</section>\n\n<style>\n  #editor {\n    width      : " + w + "px;\n    height     : " + h + "px;\n    background : url(" + image_url + ") no-repeat -" + x + "px -" + y + "px;\n  }\n\n  main {\n    min-width: " + (w + 100) + "px;\n  }\n</style>";
+      return "<div id=\"editor\">\n  <canvas id=\"canvas-image\" width=\"" + w + "\" height=\"" + h + "\"></canvas>\n  <canvas id=\"canvas-annotations\" width=\"" + w + "\" height=\"" + h + "\"></canvas>\n</div>\n\n<style>\n  #editor {\n    width      : " + w + "px;\n    height     : " + h + "px;\n    background : url(" + image_url + ") no-repeat -" + x + "px -" + y + "px;\n  }\n\n  #editor-container {\n    min-width: " + (w + 100) + "px;\n  }\n</style>";
     };
 
     annotate_canvas = function($canvas) {
@@ -97,6 +97,9 @@
                     creds: creds,
                     token: token
                   };
+                  if (localStorage.position) {
+                    $("#trello-card-position").prop("checked", true);
+                  }
                   build_trello_boards(access);
                   return bind_trello(access);
                 }
@@ -104,7 +107,7 @@
             }
           });
         } else {
-          return callback(false);
+
         }
       });
     };
@@ -122,21 +125,26 @@
         return $(this).toggleClass("selected");
       });
       return $("#trello-card-submit").on("click", function() {
-        return submit_trello_card(access, $("#trello-card-name").val(), $("#trello-card-description").val(), $("#trello-lists select option:selected").val(), get_selected_labels(), $("#trello-card-position").prop("checked"), blob(save_canvas()));
+        return validate_card_info(function(validated) {
+          if (validated) {
+            save_preferences_to_storage();
+            $("#trello-card-submit").prop("disabled", true);
+            $("#trello-upload-progress").show();
+            return submit_trello_card(access, $("#trello-card-name").val(), $("#trello-card-description").val(), $("#trello-lists select option:selected").val(), get_selected_labels(), $("#trello-card-position").prop("checked"), blob(save_canvas()));
+          }
+        });
       });
     };
 
     build_trello_boards = function(access) {
       return Trello.get_boards(access, function(boards) {
-        var board, _i, _len, _results;
+        var board, _i, _len;
         if (boards.length) {
-          _results = [];
           for (_i = 0, _len = boards.length; _i < _len; _i++) {
             board = boards[_i];
-            $("#trello-boards select").append("<option value='" + board.id + "'>" + board.name + "</option>");
-            _results.push($("#trello-boards select").trigger("change"));
+            $("#trello-boards select").append("<option value='" + board.id + "' " + (board.id === localStorage.board ? "selected" : "") + ">" + board.name + "</option>");
           }
-          return _results;
+          return $("#trello-boards select").trigger("change");
         }
       });
     };
@@ -149,7 +157,7 @@
           _results = [];
           for (_i = 0, _len = lists.length; _i < _len; _i++) {
             list = lists[_i];
-            $("#trello-lists select").append("<option value='" + list.id + "'>" + list.name + "</option>");
+            $("#trello-lists select").append("<option value='" + list.id + "' " + (list.id === localStorage.list ? "selected" : "") + ">" + list.name + "</option>");
             _results.push($("#trello-lists select").trigger("change"));
           }
           return _results;
@@ -182,7 +190,10 @@
         if (card && blob) {
           return Trello.upload_attachment(access, card.id, blob, function(data) {
             if (data.isUpload) {
-              return alert("successfully uploaded image");
+              $("#trello-upload-progress").hide();
+              return $("#trello-upload-success").show().append("<div class='url'><a href='" + card.shortUrl + "'>" + card.shortUrl + "</a></div>");
+            } else {
+              return alert("Upload failed. Please try again.");
             }
           });
         }
@@ -202,6 +213,40 @@
       return array.join(",");
     };
 
+    validate_card_info = function(callback) {
+      var validations;
+      validations = [];
+      validations.push($("#trello-boards select").val() === "" ? false : true);
+      validations.push($("#trello-lists select").val() === "" ? false : true);
+      validations.push($("#trello-card-name").val() === "" ? false : true);
+      append_errors(validations);
+      return callback(validations.indexOf(false) === -1 ? true : false);
+    };
+
+    append_errors = function(errors) {
+      var $val;
+      if (errors == null) {
+        errors = [];
+      }
+      $val = $("#trello-validation");
+      $val.empty();
+      if (!errors[0]) {
+        $val.append("<div class='error'>Please select a board before submitting.</div>");
+      }
+      if (!errors[1]) {
+        $val.append("<div class='error'>Please select a list before submitting.</div>");
+      }
+      if (!errors[2]) {
+        return $val.append("<div class='error'>Please add a card name before submitting.</div>");
+      }
+    };
+
+    save_preferences_to_storage = function() {
+      localStorage.board = $("#trello-boards select option:selected").val();
+      localStorage.list = $("#trello-lists select option:selected").val();
+      return localStorage.position = $("#trello-card-position").prop("checked");
+    };
+
     return Edit;
 
   })();
@@ -212,10 +257,22 @@
 
   jQuery(function() {
     Edit.init_trello();
-    $("main").css({
+    $("#editor-container").css({
       "min-height": $(window).innerHeight() - 70
     });
-    return $("#upload").on("click", ".upload-button", function() {});
+    return $("#upload").on("click", ".upload-button", function() {
+      var $trello;
+      $trello = $("#trello");
+      if ($trello.is(":visible")) {
+        if ($("#trello-card-name").val() !== "" && $("#trello-boards select").val() !== "" && $("#trello-lists select").val() !== "") {
+          return $("#trello-card-submit").trigger("click");
+        } else {
+          return $("#trello").slideUp(200);
+        }
+      } else {
+        return $("#trello").slideDown(200);
+      }
+    });
   });
 
   Trello = (function() {
