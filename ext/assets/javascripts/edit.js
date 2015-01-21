@@ -3,7 +3,7 @@
   var Edit, Trello;
 
   Edit = (function() {
-    var annotate_canvas, append_canvas_html, append_errors, bind_trello, blob, build_trello_boards, build_trello_labels, build_trello_lists, canvas_html, draw_image_to_canvas, get_selected_labels, log_in_to_trello, page_info, save_canvas, save_preferences_to_storage, submit_trello_card, update_select_field, validate_card_info;
+    var annotate_canvas, append_canvas_html, append_errors, bind_trello, blob, build_trello_boards, build_trello_labels, build_trello_lists, canvas_html, draw_image_to_canvas, get_selected_labels, page_info, save_canvas, save_preferences_to_storage, submit_trello_card, update_select_field, validate_card_info;
 
     function Edit() {}
 
@@ -264,12 +264,6 @@
       localStorage.board = $("#trello-boards select option:selected").val();
       localStorage.list = $("#trello-lists select option:selected").val();
       return localStorage.position = $("#trello-card-position").prop("checked");
-    };
-
-    log_in_to_trello = function() {
-      return Trello.log_in($("#trello-username").val(), $("#trello-password").val(), function(logged_in) {
-        return console.log(logged_in);
-      });
     };
 
     return Edit;

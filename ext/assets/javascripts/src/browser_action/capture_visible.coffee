@@ -15,7 +15,6 @@ class CaptureVisible
     chrome_version : window.navigator.appVersion.match(/Chrome\/(.*?) /)[1];
 
   open_edit_tab = (image, page_info) ->
-    console.log "open tab"
     chrome.tabs.create
       url: edit_page_path
       (tab)=>

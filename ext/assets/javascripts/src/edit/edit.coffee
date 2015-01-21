@@ -174,10 +174,6 @@ class Edit
     localStorage.list      = $("#trello-lists select option:selected").val()
     localStorage.position  = $("#trello-card-position").prop("checked")
 
-  log_in_to_trello = ->
-    Trello.log_in $("#trello-username").val(), $("#trello-password").val(), (logged_in)->
-      console.log logged_in
-
 chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
   Edit.screenshot message.screenshot, message.image, message.image_info
   Edit.prepare_page_info message.page

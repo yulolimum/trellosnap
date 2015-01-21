@@ -88,7 +88,6 @@
     };
 
     open_edit_tab = function(image, page_info) {
-      console.log("open tab");
       return chrome.tabs.create({
         url: edit_page_path
       }, (function(_this) {

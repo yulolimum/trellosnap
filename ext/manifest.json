@@ -2,7 +2,7 @@
   "name": "Trellosnap",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "Bug reporting tool that allows you to screenshot a page or snippet and post it to Trello as a card.",
+  "description": "Bug reporting tool that allows you to screenshot the viewport or custom selection and post it to Trello as a card.",
   "homepage_url": "http://glukhenko.com",
   "icons": {
     "16": "assets/images/icons/icon16.png",
