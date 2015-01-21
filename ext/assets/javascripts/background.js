@@ -10,23 +10,31 @@
     edit_page_path = "/views/edit.html";
 
     BGCapturePartial.screenshot = function(image_info) {
-      return chrome.tabs.captureVisibleTab(void 0, {
-        format: "png"
-      }, (function(_this) {
-        return function(image) {
-          return open_edit_tab(image, image_info);
-        };
-      })(this));
+      return chrome.tabs.executeScript(null, {
+        code: "document.URL"
+      }, function(page_url) {
+        return chrome.tabs.executeScript(null, {
+          code: "var res = window.innerWidth + ' x ' + window.innerHeight; res"
+        }, function(page_resolution) {
+          return chrome.tabs.captureVisibleTab(void 0, {
+            format: "png"
+          }, function(image) {
+            return open_edit_tab(image, image_info, page_info(page_url[0], page_resolution[0]));
+          });
+        });
+      });
     };
 
-    page_info = function() {
+    page_info = function(url, res) {
       return {
-        browser: "mozilla",
-        resolution: "500x400"
+        url: url,
+        resolution: res,
+        retina: devicePixelRatio === 2 ? "yes" : "no",
+        chrome_version: window.navigator.appVersion.match(/Chrome\/(.*?) /)[1]
       };
     };
 
-    open_edit_tab = function(image, image_info) {
+    open_edit_tab = function(image, image_info, page_info) {
       return chrome.tabs.create({
         url: edit_page_path
       }, (function(_this) {
@@ -34,7 +42,7 @@
           chrome.tabs.sendMessage(tab.id, {
             image: image,
             image_info: image_info,
-            page: page_info(),
+            page: page_info,
             screenshot: "partial"
           });
           return window.close();

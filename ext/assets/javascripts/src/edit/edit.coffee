@@ -1,4 +1,10 @@
 class Edit
+  page_info = ""
+
+  @prepare_page_info = (page_information) ->
+    page_info += "\n\n----------\n\n"
+    for name, value of page_information
+      page_info += "#{name}: #{value}\n"
 
   @screenshot = (type, image_url, image_info={}) ->
     $image = new Image
@@ -8,7 +14,6 @@ class Edit
         append_canvas_html type, image_url, image_info, $image
         $image_canvas = $("#canvas-image")
         context = $image_canvas[0].getContext('2d')
-        # context.scale(2,2)
         draw_image_to_canvas type, $image, image_info, context
         annotate_canvas $("#canvas-annotations")
 
@@ -98,7 +103,7 @@ class Edit
           save_preferences_to_storage()
           $("#trello-card-submit").prop "disabled", true
           $("#trello-upload-progress").show()
-          submit_trello_card access, $("#trello-card-name").val(), $("#trello-card-description").val(), $("#trello-lists select option:selected").val(), get_selected_labels(), $("#trello-card-position").prop("checked"), blob(save_canvas())
+          submit_trello_card access, $("#trello-card-name").val(), $("#trello-card-description").val() + page_info, $("#trello-lists select option:selected").val(), get_selected_labels(), $("#trello-card-position").prop("checked"), blob(save_canvas())
 
   build_trello_boards = (access) ->
     Trello.get_boards access, (boards) ->
@@ -165,6 +170,7 @@ class Edit
 
 chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
   Edit.screenshot message.screenshot, message.image, message.image_info
+  Edit.prepare_page_info message.page
 
 jQuery ->
   Edit.init_trello()
@@ -175,7 +181,7 @@ jQuery ->
   $("#upload").on "click", ".upload-button", ->
     $trello = $("#trello")
     if $trello.is ":visible"
-      if $("#trello-card-name").val() != "" && $("#trello-boards select").val() != "" && $("#trello-lists select").val() != ""
+      if $("#trello-card-name").val() != "" && $("#trello-boards select").val() != "" && $("#trello-lists select").val() != "" && !$("#trello-card-submit").is(':disabled')
         $("#trello-card-submit").trigger "click"
       else
         $("#trello").slideUp 200

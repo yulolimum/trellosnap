@@ -3,9 +3,22 @@
   var Edit, Trello;
 
   Edit = (function() {
-    var annotate_canvas, append_canvas_html, append_errors, bind_trello, blob, build_trello_boards, build_trello_labels, build_trello_lists, canvas_html, draw_image_to_canvas, get_selected_labels, save_canvas, save_preferences_to_storage, submit_trello_card, update_select_field, validate_card_info;
+    var annotate_canvas, append_canvas_html, append_errors, bind_trello, blob, build_trello_boards, build_trello_labels, build_trello_lists, canvas_html, draw_image_to_canvas, get_selected_labels, page_info, save_canvas, save_preferences_to_storage, submit_trello_card, update_select_field, validate_card_info;
 
     function Edit() {}
+
+    page_info = "";
+
+    Edit.prepare_page_info = function(page_information) {
+      var name, value, _results;
+      page_info += "\n\n----------\n\n";
+      _results = [];
+      for (name in page_information) {
+        value = page_information[name];
+        _results.push(page_info += "" + name + ": " + value + "\n");
+      }
+      return _results;
+    };
 
     Edit.screenshot = function(type, image_url, image_info) {
       var $image;
@@ -130,7 +143,7 @@
             save_preferences_to_storage();
             $("#trello-card-submit").prop("disabled", true);
             $("#trello-upload-progress").show();
-            return submit_trello_card(access, $("#trello-card-name").val(), $("#trello-card-description").val(), $("#trello-lists select option:selected").val(), get_selected_labels(), $("#trello-card-position").prop("checked"), blob(save_canvas()));
+            return submit_trello_card(access, $("#trello-card-name").val(), $("#trello-card-description").val() + page_info, $("#trello-lists select option:selected").val(), get_selected_labels(), $("#trello-card-position").prop("checked"), blob(save_canvas()));
           }
         });
       });
@@ -252,7 +265,8 @@
   })();
 
   chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    return Edit.screenshot(message.screenshot, message.image, message.image_info);
+    Edit.screenshot(message.screenshot, message.image, message.image_info);
+    return Edit.prepare_page_info(message.page);
   });
 
   jQuery(function() {
@@ -264,7 +278,7 @@
       var $trello;
       $trello = $("#trello");
       if ($trello.is(":visible")) {
-        if ($("#trello-card-name").val() !== "" && $("#trello-boards select").val() !== "" && $("#trello-lists select").val() !== "") {
+        if ($("#trello-card-name").val() !== "" && $("#trello-boards select").val() !== "" && $("#trello-lists select").val() !== "" && !$("#trello-card-submit").is(':disabled')) {
           return $("#trello-card-submit").trigger("click");
         } else {
           return $("#trello").slideUp(200);
