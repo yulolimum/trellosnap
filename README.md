@@ -15,7 +15,7 @@ This extension uses Ruby and Node build tools. The following instructions assume
 - Run `npm install -g jade@1.8.1`
 - Run `bundle`
 - Run `foreman start`
-- Tweak code within the `src` folders
+- Tweak code within the `*/src` folders
 
 
 -----
