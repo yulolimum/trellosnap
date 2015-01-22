@@ -95,9 +95,9 @@ Set up project. File organization. Started throwing together needed files etc.
 
 Credit where it's due:
 
-- Loosely based on the extension of @louischatriot. [Github](https://github.com/louischatriot/trello-capture) [Chrome Store](https://chrome.google.com/webstore/detail/capture-for-trello/kclmblojjeedhebmlokdjeiogppjkfih)
+- Loosely based on the extension of louischatriot. [Github](https://github.com/louischatriot/trello-capture), [Chrome Store](https://chrome.google.com/webstore/detail/capture-for-trello/kclmblojjeedhebmlokdjeiogppjkfih)
 
-- Uses the lightweight, enhanced/modified annotation library of DjaoDjin. [Github](https://github.com/djaodjin/djaodjin-annotate) [Website](https://djaodjin.com/blog/jquery-plugin-to-annotate-images.blog.html#demo-annotate)
+- Uses the lightweight, enhanced/modified annotation library of DjaoDjin. [Github](https://github.com/djaodjin/djaodjin-annotate), [Website](https://djaodjin.com/blog/jquery-plugin-to-annotate-images.blog.html#demo-annotate)
 
 
 -----
