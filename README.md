@@ -1,6 +1,6 @@
 # Trellosnap
 
-This is a Chrome Extension that helps with the task of website bug reporting via Trello. It give you the option to take either a screenshot of the visible portion of the website or a custom selection and allows you to annotate the screenshot (add arrows and boxes). After adding a card title and description, the screenshot can be uploaded to Trello to a board of your choosing, under a specific list, with optional labels. You will also be able to submit your browser information to help with further debugging.
+This is a Chrome Extension that helps with the task of website bug reporting via Trello. It gives you the option to take either a screenshot of the visible portion of the website or a custom selection and allows you to annotate the screenshot (add arrows and boxes). After adding a card title and description, the screenshot can be uploaded to Trello to a board of your choosing, under a specific list, with optional labels. You will also be able to submit your browser information to help with further debugging.
 
 
 -----
