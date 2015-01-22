@@ -1,9 +1,9 @@
 {
   "name": "Trellosnap",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "manifest_version": 2,
-  "description": "Bug reporting tool that allows you to screenshot the viewport or custom selection and post it to Trello as a card.",
-  "homepage_url": "http://glukhenko.com",
+  "description": "Trello bug reporting that gives you the option to take either a screenshot of the visible portion of the website or a custom selection and allows you to annotate the screenshot (add arrows and boxes). After adding a card title and description, the screenshot can be uploaded to Trello to a board of your choosing, under a specific list, with optional labels. You will also be able to submit your browser information to help with further debugging.",
+  "homepage_url": "https://github.com/yulianglukhenko/trellosnap",
   "icons": {
     "16": "assets/images/icons/icon16.png",
     "48": "assets/images/icons/icon48.png",
@@ -14,7 +14,7 @@
     "persistent": false
   },
   "browser_action": {
-    "default_icon": "assets/images/icons/icon19.png",
+    "default_icon": "assets/images/icons/icon48.png",
     "default_title": "Trellosnap",
     "default_popup": "views/browser-action.html"
   },
