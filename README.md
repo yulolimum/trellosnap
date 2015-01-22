@@ -15,7 +15,7 @@ This extension uses Ruby and Node build tools. The following instructions assume
 - Run `npm install -g jade@1.8.1`
 - Run `bundle`
 - Run `foreman start`
-- Add the `ext` folder to chrome as an "Unpacked Extension"
+- Add the `ext/` folder to chrome as an "Unpacked Extension"
 - Tweak code within the `src` folders
 
 
