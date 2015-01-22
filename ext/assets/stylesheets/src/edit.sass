@@ -5,6 +5,9 @@
   header
     height: 70px
 
+    @include media(max-width 655px)
+      height : 188px
+
     .container
       height: 100%
 
@@ -19,20 +22,37 @@
       z-index    : 10
       box-shadow : 0px 2px 4px rgba(black, .7)
 
+      @include media(max-width 655px)
+        position : absolute
+        height   : auto
+
     .logo
       @include span-columns(3)
+
+      @include media(max-width 655px)
+        @include span-columns(12)
 
       h1
         font-weight : 300
         padding     : 0
         color       : white
         line-height : 70px
-        font-size: 26px
+        font-size   : 26px
+
+        @include media(max-width 655px)
+          text-align  : center
+          font-size   : 22px
+          line-height : 48px
+
 
     #annotate
       @include span-columns(6)
       padding    : 4px
       height     : 100%
+
+      @include media(max-width 655px)
+        @include span-columns(12)
+        height : 70px
 
       #annotate_tools
         width       : 100%
@@ -75,8 +95,11 @@
             @include transition(all .2s ease-in-out)
 
         .annotate-rectangle, .annotate-arrow
-          height     : 100%
-          width      : 50px
+          height : 100%
+          width  : 50px
+
+          @include media(max-width 655px)
+            width : 46px
 
           label
             cursor : pointer
@@ -154,6 +177,9 @@
       @include row
       padding: 15px 0px
 
+      @include media(max-width 655px)
+        @include span-columns(12)
+
       .upload-button
         width          : 120px
         max-width      : 100%
@@ -168,6 +194,10 @@
         letter-spacing : 1px
         cursor         : pointer
         @include transition(all .2s ease-in-out)
+
+        @include media(max-width 655px)
+          float  : none
+          margin : 0 auto
 
         &:hover
           background: darken(#cdb300, 8)
@@ -190,6 +220,9 @@
       margin-bottom  : 30px
       text-align     : center
 
+      @include media($mobile)
+        font-size : 16px
+
       &:after
         content       : ""
         width         : 25px
@@ -199,6 +232,13 @@
 
     #trello-board-info, #trello-card-info, #trello-upload
       @include span-columns(2 of 6)
+
+      @include media($mobile)
+        @include span-columns(3 of 6)
+
+      @include media($mobile-portrait)
+        @include span-columns(12)
+        margin-bottom : 40px
 
     #trello-login
       @include span-columns(2 of 6)
@@ -315,8 +355,19 @@
         &.selected
           border-color: darken(#FAD900, 30%)
 
+    #trello-card-info
+      @include media($mobile)
+        margin-right : 0px
+
     #trello-upload
       text-align  : center
+      @include media($mobile)
+        @include span-columns(12)
+        padding-top : 80px
+
+      .section-title
+        @include media($mobile)
+          display: none
 
       #trello-card-submit
         width          : 100%
