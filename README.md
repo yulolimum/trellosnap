@@ -1,10 +1,9 @@
 # Trellosnap
 
-```
-NOTE: This is a work in progress. The extension does not yet work.
-```
+This is a Chrome Extension that helps with the task of website bug reporting via Trello. It give you the option to take either a screenshot of the visible portion of the website or a custom selection and allows you to annotate the screenshot (add arrows and boxes). After adding a card title and description, the screenshot can be uploaded to Trello to a board of your choosing, under a specific list, with optional labels. You will also be able to submit your browser information to help with further debugging.
 
-This is a Chrome Extension that will help with the task of website bug reporting via Trello. It will allow you to take a screenshot of a website page (entire browser window or partial selection) and annotate the screenshot (add arrows and boxes). After adding a card title and description, the screenshot will be uploaded to Trello to a board of your choosing, under a specific list, with an optional label. You will also be able to submit your browser information to help with further debugging.
+
+-----
 
 ### Development Setup
 
@@ -18,6 +17,19 @@ This extension uses Ruby and Node build tools. The following instructions assume
 - Run `foreman start`
 - Tweak code within the `src` folders
 
+
+-----
+
+### To-do
+
+- Refactor edit.coffee
+
+- Refactor edit.sass
+
+- Allow screenshots to be attached to existing cards
+
+
+-----
 
 ### Timeline
 
@@ -74,3 +86,20 @@ Hooked up event to capture visible page and send the image to an 'edit' screen. 
 ###### 01-08-15
 
 Set up project. File organization. Started throwing together needed files etc.
+
+
+-----
+
+
+Credit where it's due:
+
+- Loosely based on the extension of louischatriot. [https://github.com/louischatriot/trello-capture](Github) [https://chrome.google.com/webstore/detail/capture-for-trello/kclmblojjeedhebmlokdjeiogppjkfih](Chrome Store)
+
+- Uses the lightweight, enhanced/modified annotation library of DjaoDjin. [https://github.com/djaodjin/djaodjin-annotate](Github) [https://djaodjin.com/blog/jquery-plugin-to-annotate-images.blog.html#demo-annotate](Website)
+
+
+-----
+
+Tags:
+
+- screenshot to trello, trello screenshots, upload screenshot to trello, trello bug reporting, trello qa, website qa trello
