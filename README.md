@@ -21,6 +21,13 @@ This extension uses Ruby and Node build tools. The following instructions assume
 
 ### Timeline
 
+###### 01-21-15
+
+Made the Edit screen responsive. Cleaning up.
+
+![http://clrsight.co/yg/012115-30mq3.jpg?+](http://clrsight.co/yg/012115-30mq3.jpg?+)
+
+
 ###### 01-20-15
 
 Hooked up the final event listeners. Implemented localStorage for previously used boards and lists. Added a login button. Added icons. Getting ready for verion 1 release.
