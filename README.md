@@ -40,6 +40,10 @@ This extension uses Ruby and Node build tools. The following instructions assume
 
 ### Timeline
 
+###### 01-22-15
+
+Version 0.1.0 published on the Chrome Web Store.
+
 ###### 01-21-15
 
 Made the Edit screen responsive. Cleaning up.
