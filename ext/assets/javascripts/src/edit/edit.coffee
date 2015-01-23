@@ -19,17 +19,17 @@ class Edit
 
   draw_image_to_canvas = (type, $image, image_info={}, context) ->
     if type == "visible"
-      context.drawImage $image, 0, 0
+      context.drawImage $image, 0, 0, $image.naturalWidth/devicePixelRatio, $image.naturalHeight/devicePixelRatio
     else if type == "partial"
-      context.drawImage $image, image_info.x, image_info.y, image_info.w, image_info.h, 0, 0, image_info.w, image_info.h
+      context.drawImage $image, image_info.x*devicePixelRatio, image_info.y*devicePixelRatio, image_info.w*devicePixelRatio, image_info.h*devicePixelRatio, 0, 0, image_info.w, image_info.h
 
   append_canvas_html = (type, image_url, image_info={}, $image) ->
     if type == "visible"
-      $("#editor-container").append canvas_html image_url, $image.naturalWidth, $image.naturalHeight, 0, 0
+      $("#editor-container").append canvas_html image_url, $image.naturalWidth/devicePixelRatio, $image.naturalHeight/devicePixelRatio, 0, 0, $image.naturalWidth/devicePixelRatio, $image.naturalHeight/devicePixelRatio
     else if type == "partial"
-      $("#editor-container").append canvas_html image_url, image_info.w, image_info.h, image_info.x, image_info.y
+      $("#editor-container").append canvas_html image_url, image_info.w, image_info.h, image_info.x, image_info.y, $image.naturalWidth/devicePixelRatio, $image.naturalHeight/devicePixelRatio
 
-  canvas_html = (image_url, w, h, x, y) ->
+  canvas_html = (image_url, w, h, x, y, bg_w, bg_h) ->
     """
       <div id="editor">
         <canvas id="canvas-image" width="#{w}" height="#{h}"></canvas>
@@ -38,9 +38,10 @@ class Edit
 
       <style>
         #editor {
-          width      : #{w}px;
-          height     : #{h}px;
-          background : url(#{image_url}) no-repeat -#{x}px -#{y}px;
+          width           : #{w}px;
+          height          : #{h}px;
+          background      : url(#{image_url}) no-repeat -#{x}px -#{y}px;
+          background-size: #{bg_w}px #{bg_h}px;
         }
 
         #editor-container {
