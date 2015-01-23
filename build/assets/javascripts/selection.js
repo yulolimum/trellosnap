@@ -168,6 +168,13 @@
         reenable_scroll();
         return $trellosnap.remove();
       });
+      $(document).on("keyup.cancel_trellosnap", function(e) {
+        if (e.keyCode === 27) {
+          reenable_scroll();
+          $trellosnap.remove();
+          return $(document).unbind("keyup.cancel_trellosnap");
+        }
+      });
       $retake.on("click", function() {
         return reinit_selection();
       });

@@ -122,6 +122,11 @@ class Selection
     $cancel.on "click", ->
       reenable_scroll()
       $trellosnap.remove()
+    $(document).on "keyup.cancel_trellosnap", (e)->
+      if e.keyCode == 27
+        reenable_scroll()
+        $trellosnap.remove()
+        $(document).unbind "keyup.cancel_trellosnap"
     $retake.on "click", ->
       reinit_selection()
     $capture.on "click", ->
