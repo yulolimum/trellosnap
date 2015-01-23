@@ -130,9 +130,9 @@ MIT License
       context.lineWidth = _this.options.linewidth;
       context.moveTo(x, y);
       context.lineTo(w, h);
-      context.lineTo(w - 10 * Math.cos(angle - Math.PI / 6), h - 10 * Math.sin(angle - Math.PI / 6));
+      context.lineTo(w - 20 * Math.cos(angle - Math.PI / 9), h - 20 * Math.sin(angle - Math.PI / 9));
       context.moveTo(w, h);
-      context.lineTo(w - 10 * Math.cos(angle + Math.PI / 6), h - 10 * Math.sin(angle + Math.PI / 6));
+      context.lineTo(w - 20 * Math.cos(angle + Math.PI / 9), h - 20 * Math.sin(angle + Math.PI / 9));
       context.strokeStyle = tint;
       context.stroke();
     },
@@ -311,7 +311,7 @@ MIT License
     tools_container: "body",
     color: 'red',
     type: 'rectangle',
-    linewidth: 3,
+    linewidth: 4,
     fontsize: '16px',
   };
 
