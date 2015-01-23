@@ -44,7 +44,6 @@
           font-size   : 22px
           line-height : 48px
 
-
     #annotate
       @include span-columns(6)
       padding    : 4px
@@ -243,6 +242,10 @@
     #trello-login
       @include span-columns(2 of 6)
       @include shift(2 of 6)
+
+      @include media($mobile)
+        @include span-columns(8)
+        @include shift(2)
 
       .log-in-to-trello
         @extend %button
