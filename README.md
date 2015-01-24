@@ -1,4 +1,6 @@
-# Trellosnap
+# Snapshot for Trello
+
+#### (formerly Trellosnap)
 
 [<img src="https://developer.chrome.com/webstore/images/ChromeWebStore_Badge_v2_496x150.png">](https://chrome.google.com/webstore/detail/trellosnap/lkkgpfdhgclmmhaggnebklhmkckeddad)
 
@@ -108,6 +110,12 @@ Credit where it's due:
 
 
 -----
+
+Legal:
+
+We are not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).
+
+_____
 
 Tags:
 
