@@ -38,6 +38,10 @@
         color       : white
         line-height : 70px
         font-size   : 26px
+        min-width   : 210px
+
+        @include media($mobile)
+          font-size: 20px
 
         @include media(max-width 655px)
           text-align  : center

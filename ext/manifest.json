@@ -1,5 +1,5 @@
 {
-  "name": "Trellosnap",
+  "name": "Snapshot for Trello",
   "version": "0.1.3",
   "manifest_version": 2,
   "description": "Trello bug reporting tool that allows you to take website screenshots, annotate them, and upload to Trello with a couple clicks.",
@@ -15,7 +15,7 @@
   },
   "browser_action": {
     "default_icon": "assets/images/icons/icon48.png",
-    "default_title": "Trellosnap",
+    "default_title": "Snapshot for Trello",
     "default_popup": "views/browser-action.html"
   },
   "permissions": [
