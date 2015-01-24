@@ -31,8 +31,6 @@ This extension uses Ruby and Node build tools. The following instructions assume
 
 - Refactor edit.sass
 
-- Fix annotation arrow tip
-
 - Allow screenshots to be attached to existing cards
 
 
