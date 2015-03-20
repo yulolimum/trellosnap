@@ -1,4 +1,5 @@
 @import "vendor/_normalize"
+@import "vendor/_perfect-scrollbar"
 @import "_base/base"
 
 #trellosnap
@@ -206,13 +207,15 @@
           background: darken(#b59f00, 8)
           @include transition(all .2s ease-in-out)
 
+
+
   #trello
-    padding    : 50px 0px
+    padding    : 35px 0px
     width      : 100%
     background : white
     display    : none
 
-    #add-card-container, #login-container
+    #add-card-container, #login-container, #card-status-picker
       display: none
 
     .section-title
@@ -233,7 +236,7 @@
         display       : block
         margin        : 22px auto 0px
 
-    #trello-board-info, #trello-card-info, #trello-upload
+    #trello-board-info, #trello-card-info, #trello-card-picker, #trello-upload
       @include span-columns(2 of 6)
 
       @include media($mobile)
@@ -414,6 +417,204 @@
             @include transition(all .2s ease-in-out)
             color: darken(#0079BF, 10)
 
+    #trello-card-picker
+      display: none
+
+      .scrollable-card-list
+        height        : 220px
+        margin-bottom : 10px
+        overflow      : hidden
+        padding-right : 30px
+        position      : relative
+
+      .card
+        @include row
+        @include transition(border-color .2s ease-in-out)
+        padding       : 8px 15px 8px 11px
+        background    : lighten($blue, 65%)
+        margin-bottom : 10px
+        cursor        : pointer
+        border-left   : 4px solid transparent
+        border-color  : transparent
+
+        &:last-of-type
+          margin-bottom: 0px
+
+        &.selected
+          @include transition(border-color .2s ease-in-out)
+          border-color: $blue
+
+        &:hover
+          @include transition(all .2s ease-in-out)
+          background : lighten($blue, 45%)
+
+        .name
+          font-size     : 13px
+          font-weight   : bold
+          white-space   : nowrap
+          overflow      : hidden
+          text-overflow : ellipsis
+          color         : darken($blue, 10%)
+
+        .description
+          font-size   : 13px
+          max-height  : 32px
+          overflow    : hidden
+          color       : lighten($blue, 15%)
+          line-height : 1.2
+
+      .error
+        padding     : 90px 15px 40px 45px
+        text-align  : center
+        font-weight : bold
+        color       : #be0037
+
+    #card-status-picker
+      text-align     : center
+      padding-bottom : 35px
+      margin-bottom  : 35px
+      position       : relative
+      @include row
+
+      &:before
+        @include row
+        position    : absolute
+        bottom      : 0px
+        left        : 50%
+        margin-left : -37.5%
+        content     : ""
+        width       : 75%
+        height      : 1px
+        background  : $light-gray
+
+      .description-left, .description-right
+        @include span-columns(220000000 of 480000000)
+        @include omega()
+        @include transition(color .2s ease-in-out)
+        text-align     : left
+        color          : $blue
+        text-transform : uppercase
+        font-weight    : bold
+        font-size      : 13px
+        padding-top    : 9px
+        cursor         : pointer
+
+        @include media($desktop-small)
+          @include span-columns(210000000 of 480000000)
+          @include omega()
+
+        @include media($tablet)
+          @include span-columns(200000000 of 480000000)
+          @include omega()
+
+        @include media($mobile)
+          @include span-columns(190000000 of 480000000)
+          @include omega()
+
+        @include media($mobile-portrait)
+          @include span-columns(180000000 of 480000000)
+          @include omega()
+          font-size   : 9px
+          padding-top : 6px
+
+        br
+          display : none
+
+        &:hover
+          @include transition(opacity .2s ease-in-out)
+          opacity: 1
+
+      .description-left
+        text-align : right
+        cursor     : default
+
+        @include media(max-width 425px)
+          padding-top: 0px
+
+          br
+            display: block
+
+        @include media($mobile-portrait)
+          padding-top   : 6px
+          padding-right : 10px
+
+      .description-right
+        opacity: .6
+        @include transition(opacity .2s ease-in-out)
+
+        @include media(max-width 625px)
+          padding-top: 0px
+
+          br
+            display: block
+
+        @include media($mobile-portrait)
+          padding-top  : 6px
+          padding-left : 10px
+
+      .status-picker
+        @include span-columns(40000000 of 480000000)
+        @include omega()
+
+        @include media($desktop-small)
+          @include span-columns(60000000 of 480000000)
+          @include omega()
+
+        @include media($tablet)
+          @include span-columns(80000000 of 480000000)
+          @include omega()
+
+        @include media($mobile)
+          @include span-columns(100000000 of 480000000)
+          @include omega()
+
+        @include media($mobile-portrait)
+          @include span-columns(120000000 of 480000000)
+          @include omega()
+
+      #switcher
+        @include transition(all .2s ease-in-out)
+        width          : 70px
+        height         : 36px
+        display        : inline-block
+        border         : 3px solid $blue
+        position       : relative
+        cursor         : pointer
+        vertical-align : middle
+
+        &:hover .toggle
+          @include transition(all .2s ease-in-out)
+          background: darken($blue, 5%)
+
+        .toggle
+          @include transition(all .2s ease-in-out)
+          position   : absolute
+          width      : 50%
+          height     : 100%
+          background : $blue
+          top        : 0
+          left       : 0
+          border     : 2px solid white
+
+      &.existing-card
+        .description-right
+          cursor  : default
+          opacity : 1
+
+        .description-left
+          @include transition(opacity .2s ease-in-out)
+          opacity : .6
+          cursor  : pointer
+
+          &:hover
+            @include transition(opacity .2s ease-in-out)
+            opacity: 1
+
+        #switcher
+
+          .toggle
+            @include transition(all .2s ease-in-out)
+            left       : 50%
 
 
   main

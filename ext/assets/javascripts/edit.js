@@ -3,7 +3,7 @@
   var Edit, Trello;
 
   Edit = (function() {
-    var annotate_canvas, append_canvas_html, append_errors, bind_trello, blob, build_trello_boards, build_trello_labels, build_trello_lists, canvas_html, draw_image_to_canvas, get_selected_labels, page_info, save_canvas, save_preferences_to_storage, submit_trello_card, update_select_field, validate_card_info;
+    var annotate_canvas, append_canvas_html, append_errors, bind_trello, blob, build_trello_boards, build_trello_cards, build_trello_labels, build_trello_lists, canvas_html, draw_image_to_canvas, get_selected_labels, move_card_and_attach_image, page_info, prepare_uploader_for_existing_card, prepare_uploader_for_new_card, save_canvas, save_preferences_to_storage, submit_trello_card, update_select_field, update_trello_labels, validate_card_info;
 
     function Edit() {}
 
@@ -101,7 +101,7 @@
       return Trello.is_user_logged_in(function(username) {
         if (username) {
           $("#login-container").hide();
-          $("#add-card-container").show();
+          $("#card-status-picker, #add-card-container").show();
           return Trello.get_api_credentials(function(creds) {
             if (creds) {
               return Trello.get_client_token(creds, function(token) {
@@ -112,8 +112,8 @@
                     creds: creds,
                     token: token
                   };
-                  if (localStorage.position) {
-                    $("#trello-card-position").prop("checked", true);
+                  if (localStorage.position === "true") {
+                    $(".trello-card-position input").prop("checked", true);
                   }
                   build_trello_boards(access);
                   return bind_trello(access);
@@ -123,7 +123,7 @@
           });
         } else {
           $("#login-container").show();
-          $("#add-card-container").hide();
+          $("#card-status-picker, #add-card-container").hide();
           return window.setTimeout(function() {
             return Edit.init_trello();
           }, 2000);
@@ -138,10 +138,16 @@
         return build_trello_labels($(this).find("option:selected").val(), access);
       });
       $("#trello-lists select").on("change", function() {
-        return update_select_field($(this));
+        update_select_field($(this));
+        return build_trello_cards($(this).find("option:selected").val(), access);
       });
       $("#trello-labels").on("click", "> div", function() {
         return $(this).toggleClass("selected");
+      });
+      $("#trello-card-picker").on("click", ".card", function() {
+        $(this).siblings().removeClass("selected");
+        $(this).addClass("selected");
+        return update_trello_labels($(this).data("card-id"), access);
       });
       return $("#trello-card-submit").on("click", function() {
         return validate_card_info(function(validated) {
@@ -149,7 +155,7 @@
             save_preferences_to_storage();
             $("#trello-card-submit").prop("disabled", true);
             $("#trello-upload-progress").show();
-            return submit_trello_card(access, $("#trello-card-name").val(), $("#trello-card-description").val() + page_info, $("#trello-lists select option:selected").val(), get_selected_labels(), $("#trello-card-position").prop("checked"), blob(save_canvas()));
+            return submit_trello_card(access, $("#trello-card-name").val(), $("#trello-card-description").val() + page_info, $("#trello-lists select option:selected").val(), $("#trello-card-picker").find(".selected").data("card-id"), get_selected_labels(), $(".trello-card-position:visible input").is(":checked"), blob(save_canvas()));
           }
         });
       });
@@ -170,16 +176,39 @@
 
     build_trello_lists = function(board_id, access) {
       return Trello.get_lists(board_id, access, function(lists) {
-        var list, _i, _len, _results;
+        var list, _i, _len;
         if (lists.length) {
           $("#trello-lists select").empty();
-          _results = [];
           for (_i = 0, _len = lists.length; _i < _len; _i++) {
             list = lists[_i];
             $("#trello-lists select").append("<option value='" + list.id + "' " + (list.id === localStorage.list ? "selected" : "") + ">" + list.name + "</option>");
-            _results.push($("#trello-lists select").trigger("change"));
           }
-          return _results;
+          return $("#trello-lists select").trigger("change");
+        }
+      });
+    };
+
+    build_trello_cards = function(list_id, access) {
+      return Trello.get_cards(list_id, access, function(cards) {
+        var card, _i, _len;
+        $("#trello-card-picker .scrollable-card-list").empty();
+        if (cards.length) {
+          for (_i = 0, _len = cards.length; _i < _len; _i++) {
+            card = cards[_i];
+            if (!card.closed) {
+              $("#trello-card-picker .scrollable-card-list").append("<span class='card' data-card-id='" + card.id + "'><div class='name'>" + card.name + "</div><div class='description'>" + card.desc + "</div></span>");
+            }
+          }
+          $("#trello-card-picker .scrollable-card-list").perfectScrollbar("destroy").perfectScrollbar({
+            suppressScrollX: true,
+            maxScrollbarLength: '20',
+            wheelPropagation: true
+          });
+          return $("#trello-card-picker .description").dotdotdot({
+            watch: "window"
+          });
+        } else {
+          return $("#trello-card-picker .scrollable-card-list").append("<div class='error'>There are no cards in this list.</div>");
         }
       });
     };
@@ -201,22 +230,54 @@
       });
     };
 
-    submit_trello_card = function(access, name, description, list, labels, position, blob) {
-      return Trello.submit_card(access, name, description, list, labels, function(card) {
-        if (card && position) {
-          Trello.move_card_to_top(access, card.id);
-        }
-        if (card && blob) {
-          return Trello.upload_attachment(access, card.id, blob, function(data) {
-            if (data.isUpload) {
-              $("#trello-upload-progress").hide();
-              return $("#trello-upload-success").show().append("<div class='url'><a href='" + card.shortUrl + "'>" + card.shortUrl + "</a></div>");
-            } else {
-              return alert("Upload failed. Please try again.");
-            }
-          });
+    update_trello_labels = function(card_id, access) {
+      return Trello.get_card_labels(card_id, access, function(labels) {
+        var label, _i, _len, _results;
+        if (labels) {
+          _results = [];
+          for (_i = 0, _len = labels.length; _i < _len; _i++) {
+            label = labels[_i];
+            _results.push($("#trello-labels .trello-label-" + label.color).addClass("selected"));
+          }
+          return _results;
         }
       });
+    };
+
+    submit_trello_card = function(access, name, description, list_id, card_id, labels, position, blob) {
+      if (card_id == null) {
+        card_id = null;
+      }
+      if (card_id === null) {
+        return Trello.submit_card(access, name, description, list_id, labels, function(card) {
+          return move_card_and_attach_image(access, card.id, position, blob, card.shortUrl);
+        });
+      } else {
+        return move_card_and_attach_image(access, card_id, position, blob);
+      }
+    };
+
+    move_card_and_attach_image = function(access, card_id, position, blob, card_url) {
+      if (card_url == null) {
+        card_url = null;
+      }
+      if (card_id && position) {
+        Trello.move_card_to_top(access, card_id);
+      }
+      if (card_id && blob) {
+        return Trello.upload_attachment(access, card_id, blob, function(data) {
+          if (data.isUpload) {
+            $("#trello-upload-progress").hide();
+            if (card_url) {
+              return $("#trello-upload-success").show().append(" Here's a link to the card: <div class='url'><a href='" + card_url + "'>" + card_url + "</a></div>");
+            } else {
+              return $("#trello-upload-success").show().append("<div class='url'>Your image was successfully added to the card!</div>");
+            }
+          } else {
+            return alert("Upload failed. Please try again.");
+          }
+        });
+      }
     };
 
     update_select_field = function($select) {
@@ -237,7 +298,12 @@
       validations = [];
       validations.push($("#trello-boards select").val() === "" ? false : true);
       validations.push($("#trello-lists select").val() === "" ? false : true);
-      validations.push($("#trello-card-name").val() === "" ? false : true);
+      if (!$("#card-status-picker").hasClass("existing-card")) {
+        validations.push($("#trello-card-name").val() === "" ? false : true);
+      }
+      if ($("#card-status-picker").hasClass("existing-card")) {
+        validations.push(!$("#trello-card-picker").find(".selected").length ? false : true);
+      }
       append_errors(validations);
       return callback(validations.indexOf(false) === -1 ? true : false);
     };
@@ -255,15 +321,43 @@
       if (!errors[1]) {
         $val.append("<div class='error'>Please select a list before submitting.</div>");
       }
-      if (!errors[2]) {
-        return $val.append("<div class='error'>Please add a card name before submitting.</div>");
+      if ($("#card-status-picker").hasClass("existing-card")) {
+        if (!errors[2]) {
+          return $val.append("<div class='error'>Please select a card before submitting.</div>");
+        }
+      } else {
+        if (!errors[2]) {
+          return $val.append("<div class='error'>Please add a card name before submitting.</div>");
+        }
       }
     };
 
     save_preferences_to_storage = function() {
       localStorage.board = $("#trello-boards select option:selected").val();
       localStorage.list = $("#trello-lists select option:selected").val();
-      return localStorage.position = $("#trello-card-position").prop("checked");
+      return localStorage.position = $(".trello-card-position:visible input").is(":checked");
+    };
+
+    Edit.pick_card_status = function($switcher) {
+      if ($switcher.hasClass("existing-card")) {
+        $switcher.removeClass("existing-card");
+        return prepare_uploader_for_new_card();
+      } else {
+        $switcher.addClass("existing-card");
+        return prepare_uploader_for_existing_card();
+      }
+    };
+
+    prepare_uploader_for_new_card = function() {
+      $("#trello-board-info .section-title").empty().text("Boards / Lists / Labels");
+      $("#trello-card-info, #trello-labels").show();
+      return $("#trello-card-picker").hide();
+    };
+
+    prepare_uploader_for_existing_card = function() {
+      $("#trello-board-info .section-title").empty().text("Select Board and List");
+      $("#trello-card-info, #trello-labels").hide();
+      return $("#trello-card-picker").show();
     };
 
     return Edit;
@@ -276,9 +370,16 @@
   });
 
   jQuery(function() {
+    var canvas_size;
     Edit.init_trello();
-    $("#editor-container").css({
-      "min-height": $(window).innerHeight() - 70
+    canvas_size = setInterval(function() {
+      if ($(window).innerHeight() > 0) {
+        clearInterval(canvas_size);
+        return $("#editor-container").css("min-height", $(window).innerHeight() - 70 + "px");
+      }
+    }, 50);
+    $("#card-status-picker").on("click", "#switcher, .description-left, .description-right", function() {
+      return Edit.pick_card_status($("#card-status-picker"));
     });
     return $("#upload").on("click", ".upload-button", function() {
       var $trello;
@@ -388,10 +489,30 @@
       });
     };
 
-    Trello.submit_card = function(access, name, description, list, labels, callback) {
+    Trello.get_card_labels = function(card_id, access, callback) {
+      return $.ajax({
+        url: "https://api.trello.com/1/cards/" + card_id + "/labels?key=" + access.creds.api_key + "&token=" + access.token
+      }).done(function(data) {
+        return callback(data);
+      }).fail(function() {
+        return callback(false);
+      });
+    };
+
+    Trello.get_cards = function(list_id, access, callback) {
+      return $.ajax({
+        url: "https://api.trello.com/1/lists/" + list_id + "/cards?key=" + access.creds.api_key + "&token=" + access.token
+      }).done(function(data) {
+        return callback(data);
+      }).fail(function() {
+        return callback(false);
+      });
+    };
+
+    Trello.submit_card = function(access, name, description, list_id, labels, callback) {
       labels = labels.length ? "&labels=" + labels : "";
       return $.ajax({
-        url: "https://api.trello.com/1/lists/" + list + "/cards?key=" + access.creds.api_key + "&token=" + access.token + labels,
+        url: "https://api.trello.com/1/lists/" + list_id + "/cards?key=" + access.creds.api_key + "&token=" + access.token + labels,
         type: "POST",
         data: {
           name: name,
