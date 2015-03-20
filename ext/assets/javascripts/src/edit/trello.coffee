@@ -68,10 +68,26 @@ class Trello
     .fail ->
       callback false
 
-  @submit_card = (access, name, description, list, labels, callback) ->
+  @get_card_labels = (card_id, access, callback) ->
+    $.ajax
+      url: "https://api.trello.com/1/cards/#{card_id}/labels?key=#{access.creds.api_key}&token=#{access.token}"
+    .done (data)->
+      callback data
+    .fail ->
+      callback false
+
+  @get_cards = (list_id, access, callback) ->
+    $.ajax
+      url: "https://api.trello.com/1/lists/#{list_id}/cards?key=#{access.creds.api_key}&token=#{access.token}"
+    .done (data)->
+      callback data
+    .fail ->
+      callback false
+
+  @submit_card = (access, name, description, list_id, labels, callback) ->
     labels = if labels.length then "&labels=#{labels}" else ""
     $.ajax
-      url  : "https://api.trello.com/1/lists/#{list}/cards?key=#{access.creds.api_key}&token=#{access.token}#{labels}"
+      url  : "https://api.trello.com/1/lists/#{list_id}/cards?key=#{access.creds.api_key}&token=#{access.token}#{labels}"
       type : "POST"
       data : { name: name, desc: description, pos: "top" }
     .done (data)->

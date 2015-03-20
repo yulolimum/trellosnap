@@ -5,6 +5,8 @@ html(lang="en")
     link(rel="stylesheet", href="/assets/stylesheets/edit.css")
     script(src="/assets/javascripts/vendor/jquery.min.js")
     script(src="/assets/javascripts/vendor/djaodjin-annotate.js")
+    script(src="/assets/javascripts/vendor/dotdotdot.min.js")
+    script(src="/assets/javascripts/vendor/perfect-scrollbar.min.js")
     script(src="/assets/javascripts/edit.js")
   body
     #trellosnap
@@ -25,6 +27,7 @@ html(lang="en")
           .description-right Attach image to<br/> existing card
 
         #add-card-container.container
+
           #trello-board-info
             .section-title Boards / Lists / Labels
             #trello-boards
@@ -49,23 +52,34 @@ html(lang="en")
               .trello-label-pink(data-trello-color="pink")
               .trello-label-sky(data-trello-color="sky")
               .trello-label-description Click Label to Select
+
           #trello-card-info
             .section-title Card Information
             label
               input#trello-card-name(type="text" placeholder="Card Name" value="")
             label
               textarea#trello-card-description(placeholder="Card Description" value="")
-            label.checkbox-field
-              input#trello-card-position(type="checkbox")
+            label.checkbox-field.trello-card-position
+              input(type="checkbox")
               .input
               .label Place card on top
+
+          #trello-card-picker
+            .section-title Choose Card
+            .scrollable-card-list
+            label.checkbox-field.trello-card-position
+              input(type="checkbox")
+              .input
+              .label Place card on top
+
           #trello-upload
             .section-title Upload
             label
               input#trello-card-submit(type="submit" value="Submit")
             #trello-validation
             #trello-upload-progress
-            #trello-upload-success Success! Here's a link to the card:
+            #trello-upload-success Success!
+
         #login-container.container
           #trello-login
             .section-title Log in to Trello

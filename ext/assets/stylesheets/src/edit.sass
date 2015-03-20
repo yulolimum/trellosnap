@@ -1,4 +1,5 @@
 @import "vendor/_normalize"
+@import "vendor/_perfect-scrollbar"
 @import "_base/base"
 
 #trellosnap
@@ -212,7 +213,7 @@
     padding    : 35px 0px
     width      : 100%
     background : white
-    display    : block !important
+    display    : none
 
     #add-card-container, #login-container, #card-status-picker
       display: none
@@ -235,7 +236,7 @@
         display       : block
         margin        : 22px auto 0px
 
-    #trello-board-info, #trello-card-info, #trello-upload
+    #trello-board-info, #trello-card-info, #trello-card-picker, #trello-upload
       @include span-columns(2 of 6)
 
       @include media($mobile)
@@ -416,6 +417,58 @@
             @include transition(all .2s ease-in-out)
             color: darken(#0079BF, 10)
 
+    #trello-card-picker
+      display: none
+
+      .scrollable-card-list
+        height        : 220px
+        margin-bottom : 10px
+        overflow      : hidden
+        padding-right : 30px
+        position      : relative
+
+      .card
+        @include row
+        @include transition(border-color .2s ease-in-out)
+        padding       : 8px 15px 8px 11px
+        background    : lighten($blue, 65%)
+        margin-bottom : 10px
+        cursor        : pointer
+        border-left   : 4px solid transparent
+        border-color  : transparent
+
+        &:last-of-type
+          margin-bottom: 0px
+
+        &.selected
+          @include transition(border-color .2s ease-in-out)
+          border-color: $blue
+
+        &:hover
+          @include transition(all .2s ease-in-out)
+          background : lighten($blue, 45%)
+
+        .name
+          font-size     : 13px
+          font-weight   : bold
+          white-space   : nowrap
+          overflow      : hidden
+          text-overflow : ellipsis
+          color         : darken($blue, 10%)
+
+        .description
+          font-size   : 13px
+          max-height  : 32px
+          overflow    : hidden
+          color       : lighten($blue, 15%)
+          line-height : 1.2
+
+      .error
+        padding     : 90px 15px 40px 45px
+        text-align  : center
+        font-weight : bold
+        color       : #be0037
+
     #card-status-picker
       text-align     : center
       padding-bottom : 35px
@@ -543,7 +596,7 @@
           left       : 0
           border     : 2px solid white
 
-      &.new-card
+      &.existing-card
         .description-right
           cursor  : default
           opacity : 1
