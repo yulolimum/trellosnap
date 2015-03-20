@@ -1,6 +1,6 @@
 {
   "name": "Snapshot for Trello",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "manifest_version": 2,
   "description": "Trello bug reporting tool that allows you to take website screenshots, annotate them, and upload to Trello with a couple clicks.",
   "homepage_url": "https://github.com/yulianglukhenko/trellosnap",
