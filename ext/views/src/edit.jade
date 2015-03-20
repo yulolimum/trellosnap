@@ -17,7 +17,13 @@ html(lang="en")
             #upload
               .upload-button UPLOAD
       #trello
-        #card-status-picker
+        #card-status-picker.container
+          .description-left Create a new<br/> card
+          .status-picker
+            #switcher.new-card
+              .toggle
+          .description-right Attach image to<br/> existing card
+
         #add-card-container.container
           #trello-board-info
             .section-title Boards / Lists / Labels

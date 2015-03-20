@@ -79,7 +79,7 @@ class Edit
     Trello.is_user_logged_in (username) ->
       if username
         $("#login-container").hide()
-        $("#add-card-container").show()
+        $("#card-status-picker").show()
         Trello.get_api_credentials (creds) ->
           if creds
             Trello.get_client_token creds, (token) ->
@@ -90,7 +90,7 @@ class Edit
                 bind_trello access
       else
         $("#login-container").show()
-        $("#add-card-container").hide()
+        $("#card-status-picker").hide()
         window.setTimeout ->
           Edit.init_trello()
         , 2000

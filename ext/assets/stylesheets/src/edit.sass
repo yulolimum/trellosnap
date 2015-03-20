@@ -206,13 +206,15 @@
           background: darken(#b59f00, 8)
           @include transition(all .2s ease-in-out)
 
+
+
   #trello
-    padding    : 50px 0px
+    padding    : 35px 0px
     width      : 100%
     background : white
-    display    : none
+    display    : block !important
 
-    #add-card-container, #login-container
+    #add-card-container, #login-container, #card-status-picker
       display: none
 
     .section-title
@@ -413,6 +415,123 @@
           &:hover
             @include transition(all .2s ease-in-out)
             color: darken(#0079BF, 10)
+
+    #card-status-picker
+      text-align: center
+
+      .description-left, .description-right
+        @include span-columns(220000000 of 480000000)
+        @include omega()
+        text-align     : left
+        color          : $blue
+        text-transform : uppercase
+        font-weight    : bold
+        font-size      : 13px
+        padding-top    : 9px
+
+        @include media($desktop-small)
+          @include span-columns(210000000 of 480000000)
+          @include omega()
+
+        @include media($tablet)
+          @include span-columns(200000000 of 480000000)
+          @include omega()
+
+        @include media($mobile)
+          @include span-columns(190000000 of 480000000)
+          @include omega()
+
+        @include media($mobile-portrait)
+          @include span-columns(180000000 of 480000000)
+          @include omega()
+          font-size   : 9px
+          padding-top : 6px
+
+        br
+          display : none
+
+      .description-left
+        text-align : right
+
+        @include media(max-width 425px)
+          padding-top: 0px
+
+          br
+            display: block
+
+        @include media($mobile-portrait)
+          padding-top   : 6px
+          padding-right : 10px
+
+      .description-right
+        @include media(max-width 625px)
+          padding-top: 0px
+
+          br
+            display: block
+
+        @include media($mobile-portrait)
+          padding-top  : 6px
+          padding-left : 10px
+
+      .status-picker
+        @include span-columns(40000000 of 480000000)
+        @include omega()
+
+        @include media($desktop-small)
+          @include span-columns(60000000 of 480000000)
+          @include omega()
+
+        @include media($tablet)
+          @include span-columns(80000000 of 480000000)
+          @include omega()
+
+        @include media($mobile)
+          @include span-columns(100000000 of 480000000)
+          @include omega()
+
+        @include media($mobile-portrait)
+          @include span-columns(120000000 of 480000000)
+          @include omega()
+
+      #switcher
+        @include transition(all .2s ease-in-out)
+        width          : 70px
+        height         : 36px
+        display        : inline-block
+        border         : 3px solid $blue
+        position       : relative
+        cursor         : pointer
+        border-radius  : 5px
+        vertical-align : middle
+
+        &:hover .toggle
+          @include transition(all .2s ease-in-out)
+          background: darken($blue, 5%)
+
+        .toggle
+          @include transition(all .2s ease-in-out)
+          position   : absolute
+          width      : 50%
+          height     : 100%
+          background : $blue
+          top        : 0
+          left       : 0
+          border     : 2px solid white
+
+        &.new-card
+          @include transition(all .2s ease-in-out)
+          border-color: #b59f00
+
+          &:hover .toggle
+            @include transition(all .2s ease-in-out)
+            background: darken(#b59f00, 5%)
+
+          .toggle
+            @include transition(all .2s ease-in-out)
+            left       : auto
+            right      : 0
+            background : #b59f00
 
 
 

@@ -101,7 +101,7 @@
       return Trello.is_user_logged_in(function(username) {
         if (username) {
           $("#login-container").hide();
-          $("#add-card-container").show();
+          $("#card-status-picker").show();
           return Trello.get_api_credentials(function(creds) {
             if (creds) {
               return Trello.get_client_token(creds, function(token) {
@@ -123,7 +123,7 @@
           });
         } else {
           $("#login-container").show();
-          $("#add-card-container").hide();
+          $("#card-status-picker").hide();
           return window.setTimeout(function() {
             return Edit.init_trello();
           }, 2000);
