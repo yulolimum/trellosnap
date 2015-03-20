@@ -101,7 +101,7 @@
       return Trello.is_user_logged_in(function(username) {
         if (username) {
           $("#login-container").hide();
-          $("#card-status-picker").show();
+          $("#card-status-picker, #add-card-container").show();
           return Trello.get_api_credentials(function(creds) {
             if (creds) {
               return Trello.get_client_token(creds, function(token) {
@@ -123,7 +123,7 @@
           });
         } else {
           $("#login-container").show();
-          $("#card-status-picker").hide();
+          $("#card-status-picker, #add-card-container").hide();
           return window.setTimeout(function() {
             return Edit.init_trello();
           }, 2000);
@@ -266,6 +266,14 @@
       return localStorage.position = $("#trello-card-position").prop("checked");
     };
 
+    Edit.pick_card_status = function($switcher) {
+      if ($switcher.hasClass("new-card")) {
+        return $switcher.removeClass("new-card");
+      } else {
+        return $switcher.addClass("new-card");
+      }
+    };
+
     return Edit;
 
   })();
@@ -279,6 +287,9 @@
     Edit.init_trello();
     $("#editor-container").css({
       "min-height": $(window).innerHeight() - 85 + "px"
+    });
+    $("#card-status-picker").on("click", "#switcher, .description-left, .description-right", function() {
+      return Edit.pick_card_status($("#card-status-picker"));
     });
     return $("#upload").on("click", ".upload-button", function() {
       var $trello;

@@ -79,7 +79,7 @@ class Edit
     Trello.is_user_logged_in (username) ->
       if username
         $("#login-container").hide()
-        $("#card-status-picker").show()
+        $("#card-status-picker, #add-card-container").show()
         Trello.get_api_credentials (creds) ->
           if creds
             Trello.get_client_token creds, (token) ->
@@ -90,7 +90,7 @@ class Edit
                 bind_trello access
       else
         $("#login-container").show()
-        $("#card-status-picker").hide()
+        $("#card-status-picker, #add-card-container").hide()
         window.setTimeout ->
           Edit.init_trello()
         , 2000
@@ -175,6 +175,14 @@ class Edit
     localStorage.list      = $("#trello-lists select option:selected").val()
     localStorage.position  = $("#trello-card-position").prop("checked")
 
+
+  # card status
+  @pick_card_status = ($switcher) ->
+    if $switcher.hasClass "new-card"
+      $switcher.removeClass "new-card"
+    else
+      $switcher.addClass "new-card"
+
 chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
   Edit.screenshot message.screenshot, message.image, message.image_info
   Edit.prepare_page_info message.page
@@ -184,6 +192,9 @@ jQuery ->
 
   $("#editor-container").css
     "min-height": $(window).innerHeight() - 85 + "px"
+
+  $("#card-status-picker").on "click", ("#switcher, .description-left, .description-right"), ->
+    Edit.pick_card_status $("#card-status-picker")
 
   $("#upload").on "click", ".upload-button", ->
     $trello = $("#trello")
