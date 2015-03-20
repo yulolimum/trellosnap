@@ -183,7 +183,7 @@ jQuery ->
   Edit.init_trello()
 
   $("#editor-container").css
-    "min-height": $(window).innerHeight() - 70
+    "min-height": $(window).innerHeight() - 85 + "px"
 
   $("#upload").on "click", ".upload-button", ->
     $trello = $("#trello")
