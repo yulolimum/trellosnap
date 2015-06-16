@@ -166,17 +166,19 @@
     bind_confirmation_buttons = function() {
       $cancel.on("click", function() {
         reenable_scroll();
-        return $trellosnap.remove();
+        $trellosnap.remove();
+        return $(document).unbind("keyup");
       });
-      $(document).on("keyup.cancel_trellosnap", function(e) {
+      $(document).on("keyup", function(e) {
         if (e.keyCode === 27) {
           reenable_scroll();
           $trellosnap.remove();
-          return $(document).unbind("keyup.cancel_trellosnap");
+          return $(document).unbind("keyup");
         }
       });
       $retake.on("click", function() {
-        return reinit_selection();
+        reinit_selection();
+        return $(document).unbind("keyup");
       });
       return $capture.on("click", function() {
         var image_info;
@@ -188,10 +190,11 @@
         };
         $trellosnap.remove();
         reenable_scroll();
-        return chrome.runtime.sendMessage({
+        chrome.runtime.sendMessage({
           capture: true,
           image_info: image_info
         });
+        return $(document).unbind("keyup");
       });
     };
 
