@@ -33,7 +33,7 @@ This extension uses Ruby and Node build tools. The following instructions assume
 
 - Refactor edit.sass
 
-- Allow screenshots to be attached to existing cards
+- <del>Allow screenshots to be attached to existing cards</del> <b>Now available in version 0.2.0!</b>
 
 
 -----
