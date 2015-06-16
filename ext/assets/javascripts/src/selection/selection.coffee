@@ -122,18 +122,21 @@ class Selection
     $cancel.on "click", ->
       reenable_scroll()
       $trellosnap.remove()
-    $(document).on "keyup.cancel_trellosnap", (e)->
+      $(document).unbind "keyup"
+    $(document).on "keyup", (e)->
       if e.keyCode == 27
         reenable_scroll()
         $trellosnap.remove()
-        $(document).unbind "keyup.cancel_trellosnap"
+        $(document).unbind "keyup"
     $retake.on "click", ->
       reinit_selection()
+      $(document).unbind "keyup"
     $capture.on "click", ->
       image_info = {w: $box.outerWidth(), h: $box.outerHeight(), x: $box.position().left, y: $box.position().top}
       $trellosnap.remove()
       reenable_scroll()
       chrome.runtime.sendMessage {capture: true, image_info: image_info}
+      $(document).unbind "keyup"
 
 jQuery ->
   Selection.init_selection()
