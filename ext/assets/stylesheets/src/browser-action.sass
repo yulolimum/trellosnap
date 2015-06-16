@@ -3,11 +3,76 @@
 
 #trellosnap
 
+  .more-info-container
+    background  : #2C3E4F
+    font-size   : 12px
+    color       : white
+    line-height : 15px
+    text-align  : center
+    padding     : 10px 0px
+    display     : none
+
+    .more-info
+      padding         : 10px 20px
+      color           : white
+      text-decoration : none
+      display         : block
+
+      &:hover
+        &:before, &:after
+          @include transition(opacity .2s ease-in-out)
+          opacity: 1
+
+      &:after, &:before
+        @include transition(opacity .2s ease-in-out)
+        display    : inline-block
+        content    : ""
+        width      : 10px
+        height     : 1px
+        background : white
+        opacity    : 0
+        margin     : 0 10px
+        position   : relative
+        top        : -3px
+
+    img
+      margin-right : 10px
+      position     : relative
+      bottom       : -3px
+
+
+  #more-info-icon
+    @include transition(all .2s ease-in-out)
+    float      : right
+    width      : 20px
+    height     : 20px
+    cursor     : pointer
+    background :
+      position : center center
+      repeat   : no-repeat
+      image    : url(../images/ico.more-info-trigger-blue.png)
+      size     : 12px 12px
+
+    &:hover
+      @include transition(all .2s ease-in-out)
+      background :
+        color : $blue
+        image : url(../images/ico.more-info-trigger-white.png)
+
+    &.active
+      background :
+        color : white
+        image : url(../images/ico.more-info-trigger-close.png)
+
+      &:hover
+        background-color: white
+
   .action-title
+    clear       : both
     text-align  : center
     font-weight : 300
     color       : $blue
-    padding     : 15px 35px
+    padding     : 0px 35px 20px
 
   .button-container
     @include row

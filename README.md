@@ -40,6 +40,26 @@ This extension uses Ruby and Node build tools. The following instructions assume
 
 ### Timeline
 
+###### 06-15-15
+
+Version 0.2.0 published on the Chrome Web Store.
+
+Changes include:
+
+• a ton of bug fixes
+
+• feature: allow screenshots to be attached to existing cards !!!
+
+• more bug fixes
+
+• update to browser action to include changelog link, a few other useful links :)
+
+![http://clrsight.co/yg/9832fh9283h9v28h3v.gif?+](http://clrsight.co/yg/9832fh9283h9v28h3v.gif?+)
+
+###### Feb - June
+
+Bugfixes
+
 ###### 01-22-15
 
 Version 0.1.0 published on the Chrome Web Store.
