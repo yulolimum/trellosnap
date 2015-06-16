@@ -5,15 +5,29 @@
   Actions = (function() {
     function Actions() {}
 
-    Actions.bind_capture_visible = function(button) {
-      return button.on("click", function() {
+    Actions.bind_capture_visible = function($button) {
+      return $button.on("click", function() {
         return CaptureVisible.screenshot();
       });
     };
 
-    Actions.bind_capture_partial = function(button) {
-      return button.on("click", function() {
+    Actions.bind_capture_partial = function($button) {
+      return $button.on("click", function() {
         return CapturePartial.screenshot();
+      });
+    };
+
+    Actions.bind_info_button = function($button) {
+      return $button.on("click", function() {
+        var $more_info;
+        $more_info = $button.siblings(".more-info-container");
+        if ($button.hasClass("active")) {
+          $button.removeClass("active");
+          return $more_info.slideUp(150);
+        } else {
+          $button.addClass("active");
+          return $more_info.slideDown(150);
+        }
       });
     };
 
@@ -26,7 +40,10 @@
       Actions.bind_capture_visible($("#capture-visible"));
     }
     if ($("#capture-partial").length) {
-      return Actions.bind_capture_partial($("#capture-partial"));
+      Actions.bind_capture_partial($("#capture-partial"));
+    }
+    if ($("#more-info-icon").length) {
+      return Actions.bind_info_button($("#more-info-icon"));
     }
   });
 
