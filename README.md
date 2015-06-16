@@ -48,11 +48,11 @@ Changes include:
 
 • a ton of bug fixes
 
-• feature: allow screenshots to be attached to existing cards !!!
+• update to browser action to include changelog link, a few other useful links :)
 
 • more bug fixes
 
-• update to browser action to include changelog link, a few other useful links :)
+• feature: allow screenshots to be attached to existing cards !!!
 
 ![http://clrsight.co/yg/9832fh9283h9v28h3v.gif?+](http://clrsight.co/yg/9832fh9283h9v28h3v.gif?+)
 
