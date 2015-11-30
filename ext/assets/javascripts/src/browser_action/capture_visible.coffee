@@ -17,5 +17,5 @@ class CaptureVisible
   open_edit_tab = (image, page_info) ->
     chrome.tabs.create
       url: edit_page_path
-      (tab)=>
+      (tab)->
         chrome.tabs.sendMessage tab.id, {image: image, page: page_info, screenshot: "visible"}
