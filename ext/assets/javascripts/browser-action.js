@@ -107,15 +107,13 @@
     open_edit_tab = function(image, page_info) {
       return chrome.tabs.create({
         url: edit_page_path
-      }, (function(_this) {
-        return function(tab) {
-          return chrome.tabs.sendMessage(tab.id, {
-            image: image,
-            page: page_info,
-            screenshot: "visible"
-          });
-        };
-      })(this));
+      }, function(tab) {
+        return chrome.tabs.sendMessage(tab.id, {
+          image: image,
+          page: page_info,
+          screenshot: "visible"
+        });
+      });
     };
 
     return CaptureVisible;
