@@ -21,5 +21,7 @@ class BGCapturePartial
         chrome.tabs.sendMessage tab.id, {image: image, image_info: image_info, page: page_info, screenshot: "partial"}
         window.close()
 
+chrome.runtime.connect()
+
 chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
   BGCapturePartial.screenshot request.image_info if request.capture

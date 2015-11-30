@@ -54,6 +54,8 @@
 
   })();
 
+  chrome.runtime.connect();
+
   chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.capture) {
       return BGCapturePartial.screenshot(request.image_info);
